@@ -1,0 +1,2 @@
+---
+passwordpi: "$6$some-encoded-password-from-etc-shadow"
