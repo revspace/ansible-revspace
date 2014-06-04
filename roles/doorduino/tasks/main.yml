@@ -59,6 +59,6 @@
        - package
 
   - name: Download latest doorduino.pl
-    get_url: dest=/home/pi/doorduino.pl url="https://raw.githubusercontent.com/RevelationSpace/doorduino2.5/master/doorduino.pl" validate_certs=yes mode=0755 owner=pi group=pi
+    get_url: dest=/home/pi/doorduino.pl url="https://raw.githubusercontent.com/RevelationSpace/doorduino2.5/master/doorduino.pl" validate_certs={{validate_certs}} mode=0755 owner=pi group=pi
     tags:
       - download
