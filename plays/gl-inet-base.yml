@@ -30,39 +30,6 @@
       - shadow-groupmod
       - shadow-usermod
 
-  - name: Create 'pi' group
-    group: gid=1000 name=pi state=present system=no
-
-  - name: Create 'pi' user
-    user: comment='Doorduino User' group=pi createhome=yes name=pi password="{{passwordpi}}" state=present update_password=always
-
-  - name: Install required perl packages for doorduino code
-    opkg: name={{item}} state=installed
-    with_items:
-      - perl
-      - screen
-      - strace
-      - sudo
-      - perlbase-essential
-      - perlbase-autoloader
-      - perlbase-config
-      - perlbase-digest
-      - perlbase-dynaloader
-      - perlbase-errno
-      - perlbase-fcntl
-      - perlbase-file
-      - perlbase-integer
-      - perlbase-io
-      - perlbase-posix
-      - perlbase-selectsaver
-      - perlbase-socket
-      - perlbase-symbol
-      - perlbase-sys
-      - perlbase-tie
-      - perlbase-xsloader
-      - coreutils-stty
-      - curl
-      - kmod-usb-core
-      - kmod-usb2
-      - kmod-usb-serial
-      - kmod-usb-serial-ftdi
+  - name: Install authorized-keys
+    authorized_key: user=root key="{{item}}" path=/etc/dropbear/authorized_keys
+    with_items: pubkeys
