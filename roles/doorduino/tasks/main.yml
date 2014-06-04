@@ -3,12 +3,16 @@
 
   - name: Create 'pi' group
     group: gid=1000 name=pi state=present system=no
+    tags:
+      - user
 
   - name: Create 'pi' user
     user: comment='Doorduino User' group=pi createhome=yes name=pi password="{{passwordpi}}" state=present update_password=always
+    tags:
+      - user
 
   - name: Install required software (OpenWRT)
-    when: {{ ansible_distribution == 'OpenWrt' }}
+    when: ansible_distribution == 'OpenWrt'
     opkg: name={{item}} state=installed
     with_items:
       - perl
@@ -38,12 +42,23 @@
       - kmod-usb2
       - kmod-usb-serial
       - kmod-usb-serial-ftdi
+    tags:
+       - opkg
+       - package
 
   - name: Install required software (raspi/fedora)
-    when: {{ ansible_distribution == 'Fedora' }}
+    when: ansible_distribution == 'Fedora'
     yum: name={{item}} state=installed
     with_items:
       - perl
       - sudo
       - curl
       - FIXME
+    tags:
+       - yum
+       - package
+
+  - name: Download latest doorduino.pl
+    get_url: dest=/home/pi/doorduino.pl url="https://raw.githubusercontent.com/RevelationSpace/doorduino2.5/master/doorduino.pl" validate_certs=yes mode=0755 owner=pi group=pi
+    tags:
+      - download
