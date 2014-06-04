@@ -32,4 +32,4 @@
 
   - name: Install authorized-keys
     authorized_key: user=root key="{{item}}" path=/etc/dropbear/authorized_keys
-    with_items: pubkeys
+    with_items: rootpubkeys
