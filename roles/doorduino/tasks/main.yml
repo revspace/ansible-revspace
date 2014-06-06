@@ -7,7 +7,7 @@
       - user
 
   - name: Create 'pi' user
-    user: comment='Doorduino User' group=pi createhome=yes name=pi password="{{passwordpi}}" state=present update_password=always
+    user: comment='Doorduino User' group=pi createhome=yes name=pi password="{{passwordpi}}" state=present update_password=always shell=/bin/ash
     tags:
       - user
 
