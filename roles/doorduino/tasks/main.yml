@@ -12,7 +12,7 @@
       - user
 
   - name: Install required software (OpenWRT)
-    when: ansible_distribution == 'OpenWrt'
+    when: "ansible_distribution == 'OpenWrt'"
     opkg: name={{item}} state=installed
     with_items:
       - perl
@@ -47,7 +47,7 @@
        - package
 
   - name: Install required software (raspi/fedora)
-    when: ansible_distribution == 'Fedora'
+    when: "ansible_distribution == 'Fedora'"
     yum: name={{item}} state=installed
     with_items:
       - perl
