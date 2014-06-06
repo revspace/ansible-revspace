@@ -29,7 +29,17 @@
       - shadow-useradd
       - shadow-groupmod
       - shadow-usermod
+      - net-tools-hostname
 
   - name: Install authorized-keys
     authorized_key: user=root key="{{item}}" path=/etc/dropbear/authorized_keys
     with_items: rootpubkeys
+
+
+  - name: Set hostname (permanent)
+    lineinfile: 'dest=/etc/config/system line="	option hostname {{inventory_hostname_short}}" regexp="option hostname" insertafter="config system"'
+    notify: Set hostname
+
+  handlers:
+  - name: Set hostname
+    command: hostname {{ inventory_hostname_short }}
