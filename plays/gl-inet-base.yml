@@ -31,6 +31,9 @@
       - shadow-usermod
       - net-tools-hostname
 
+  - name: Create /home
+    file: dest=/home state=directory owner=root group=root mode=0755
+
   - name: Install authorized-keys
     authorized_key: user=root key="{{item}}" path=/etc/dropbear/authorized_keys
     with_items: rootpubkeys
