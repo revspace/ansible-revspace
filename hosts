@@ -1,0 +1,55 @@
+[revspace]
+gateway
+mux
+pov
+eeprom
+flux
+transformer         # Muziek fileserver 
+max232              # Shelldoos (virt / mux)
+squeezebox          # Squeeze server
+squeezeslave-klusbunker # Softsqueeze klusbunker
+wiki                # Shell (virt / mux)
+
+[mux-vms]
+eeprom
+flux
+max232
+wesm                # unmanaged
+minemu              # unmanaged
+mediaserver         # Squeezeserver
+pov
+monitor
+wiki
+
+[revspace-unmanaged]
+cam1                  # Cam
+cam2                  # Cam
+cam3                  # Cam
+cam4                  # Cam
+lasercutter           # Laser laptop
+laser                 # Laserprinter
+poe                   # Switch?
+habtracker            # Windows / Habtracker
+ledbanner             # Ledbanner / Fedora
+controller            # Wifi controller
+doorduino-voordeur    # Raspi
+doorduino-werkplaats  # Raspi
+doorduino-kantoor     # Raspi
+doorduino-sparkshack  # openwrt
+
+[revspace-noping-unknown]
+lcd           # mux -> off
+fuse
+nor           # mux -> off
+pad           # mux -> off
+cathode       # mux -> off
+battery
+oog
+door
+anon
+breadboard
+wikileaks
+foundry
+relais
+mosquitto       # alias voor squeezebox-klusbunker
+ias
