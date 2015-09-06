@@ -1,0 +1,6 @@
+---
+
+- hosts: revspace:vm-vms
+  sudo: yes
+  roles:
+    - common
