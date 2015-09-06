@@ -19,6 +19,7 @@
       - tcpdump
       - nmap
       - screen
+      - ncdu
     when: ansible_os_family == 'Debian'
     tags:
       - debian

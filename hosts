@@ -9,6 +9,12 @@ max232              # Shelldoos (virt / mux)
 squeezebox          # Squeeze server
 squeezeslave-klusbunker # Softsqueeze klusbunker
 wiki                # Shell (virt / mux)
+vm                  # New VM server
+
+[vm-vms]
+manage              # Board / Management doos (nog niet af)
+shell-jessie        # Member shell doos met debian jessie/stable
+shell-sid           # Bestaat nog niet, member shell doos met debian sid
 
 [mux-vms]
 eeprom
