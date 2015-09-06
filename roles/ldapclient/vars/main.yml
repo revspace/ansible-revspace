@@ -1,0 +1,5 @@
+---
+
+ldap_base:      dc=space,dc=revspace,dc.nl
+ldap_server:    ldap.space.revspace.nl
+ldap_uri:       ldap://{{ldap_server}}:389

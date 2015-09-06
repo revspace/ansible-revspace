@@ -1,0 +1,7 @@
+---
+
+- hosts: shell-jessie
+  sudo: no
+  user: root
+  roles:
+    - ldapclient

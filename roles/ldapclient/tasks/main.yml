@@ -1,0 +1,32 @@
+# LDAP Client role for Revspace LDAP
+# Tested on: Debian Stable
+
+---
+
+  - name: Install LDAP client software
+    apt: name={{item}} state=installed
+    when: ansible_os_family == 'Debian'
+    with_items:
+      - libpam-ldapd
+    tags:
+      - ldapclient
+      - apt
+
+  - name: Enable pam_mkhomedir module
+    lineinfile: dest=/etc/pam.d/common-account line="session    required   pam_mkhomedir.so skel=/etc/skel/ umask=0022" regexp="pam_mkhomedir.so" insertafter=EOF
+    tags:
+      - ldapclient
+      - mkhomedir
+
+  - name: Disable nscd service
+    service: name=nscd state=stopped enabled=false
+    tags:
+      - ldapclient
+      - nscd
+
+  - name: Restart nslcd service
+    service: name=nslcd state=restarted enabled=true
+    tags:
+      - ldapclient
+      - nslcd
+
