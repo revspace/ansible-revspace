@@ -4,17 +4,18 @@ mux
 pov
 eeprom
 flux
-transformer         # Muziek fileserver 
-max232              # Shelldoos (virt / mux)
 squeezebox          # Squeeze server
 squeezeslave-klusbunker # Softsqueeze klusbunker
 wiki                # Shell (virt / mux)
 vm                  # New VM server
 
+[ldap]
+10.42.43.197        # New ldap / test
+
 [vm-vms]
 manage              # Board / Management doos (nog niet af)
 shell-jessie        # Member shell doos met debian jessie/stable
-shell-sid           # Bestaat nog niet, member shell doos met debian sid
+shell-sid           # Member shell doos met debian sid/unstable
 
 [mux-vms]
 eeprom

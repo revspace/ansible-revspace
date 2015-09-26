@@ -18,6 +18,20 @@
       - ldapclient
       - mkhomedir
 
+  - name: Create login.group.allowed file
+    lineinfile: dest=/etc/login.group.allowed line="board" regexp="^board$" owner=root group=root mode=0755 create=yes
+    with_items:
+      - "{{login_groups | default('board') }}"
+    tags:
+      - ldapclient
+      - logingroups
+
+  - name: Limit access to listed groups
+    lineinfile: dest=/etc/pam.d/common-auth line="auth required pam_listfile.so onerr=fail item=group sense=allow file=/etc/login.group.allowed" owner=root group=root mode=0644 regexp="pam_listfile,*login\.group\.allowed" insertbefore=EOF
+    tags:
+      - ldapclient
+      - logingroups
+
   - name: Disable nscd service
     service: name=nscd state=stopped enabled=false
     tags:
