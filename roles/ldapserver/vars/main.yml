@@ -1,0 +1,4 @@
+---
+
+slapd_admin_pass:   "chocomate"
+slapd_domain:       "test.space.revspace.nl"

@@ -1,0 +1,15 @@
+---
+
+- name: Configure debconf items for slapd
+  debconf: name=slapd question="slapd/{{item.q}}" value="{{item.v}}" vtype="{{item.t}}"
+  with_items:
+     - { q: 'password1', v: "{{slapd_admin_pass}}", t: 'password' }
+     - { q: 'password2', v: "{{slapd_admin_pass}}", t: 'password' }
+     - { q: 'domain', v: "{{slapd_domain}}", t: 'string' }
+     - { q: 'backend', v: "MDB", t: 'select' }
+
+- name: Install required software
+  apt: name={{item}} state=installed
+  with_items:
+    - slapd
+    - ldap-utils

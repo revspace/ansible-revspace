@@ -1,0 +1,16 @@
+  - name: Install Freeradius software
+    apt: name={{item}} state=installed
+    with_items:
+      - freeradius
+
+
+
+# Configs die moeten worden gemaakt/aangepast:
+# certs/* (ca.pem dh server.key server.pem)
+# clients.conf
+# eap.conf
+# proxy.conf
+# radiusd.conf
+# mods/
+# sites-enabled / available (inner-tunnel)
+# sql.conf
