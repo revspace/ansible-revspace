@@ -1,0 +1,8 @@
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {1}to attrs=loginShell,gecos
+  by dn="cn=admin,{{slapd_root}}" write
+  by self write
+  by * read
+

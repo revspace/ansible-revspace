@@ -1,0 +1,94 @@
+#
+# Author: "Koen Martens" <gmc@revspace.nl>
+# Desc. : RevSpaceBank account balance field definition and 
+#         mixin objectClass for RevSpace ldap directory
+#	  RevSpace stock management object class and attributes
+
+# to be replaced with assigned PEN
+objectIdentifier revspaceOID            1.3.6.1.4.1.36206
+
+# some further derived short-hands
+objectIdentifier revspaceLDAP           revspaceOID:1
+objectIdentifier revspaceAttributeType  revspaceLDAP:16
+objectIdentifier revspaceObjectClass    revspaceLDAP:17
+
+# the account balance, in eurocent
+#attributetype ( 1.3.6.1.1.1.1.8 NAME 'shadowWarning'
+#	EQUALITY integerMatch
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributeType ( revspaceAttributeType:1 NAME 'accountBalance'
+        DESC 'RevSpace bank account balance in eurocent'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        EQUALITY integerMatch
+        SINGLE-VALUE )
+
+attributeType ( revspaceAttributeType:2 NAME 'iButtonSerial'
+	DESC 'iButton serial'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	ORDERING caseIgnoreOrderingMatch )
+
+attributeType ( revspaceAttributeType:7 NAME 'tweetEntry'
+	DESC 'Tweet entry'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	EQUALITY booleanMatch )
+
+attributeType ( revspaceAttributeType:8 NAME 'chanmsgEntry'
+	DESC 'Announce entry on irc channel'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	EQUALITY booleanMatch )
+
+attributeType ( revspaceAttributeType:9 NAME 'statusEntry'
+	DESC 'Announce entry in JSON status'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	EQUALITY booleanMatch )
+
+#attributeType ( revspaceAttributeType:2 NAME 'iButtonSerial'
+#        DESC 'iButton serial'
+#        SYNTAX 1.3.6.1.4.1.1466.115.121.1.16
+#        EQUALITY caseIgnoreMatch
+#        SUBSTR caseIgnoreSubstringsMatch
+#        ORDERING caseIgnoreOrderingMatch )
+
+objectclass ( revspaceObjectClass:1 NAME 'revspaceAccount'
+        DESC 'mixin RevSpace account details'
+        AUXILIARY
+        MAY ( accountBalance $ iButtonSerial $ tweetEntry $ chanmsgEntry $ statusEntry ) )
+
+# RevSpace stock management (bar items)
+#
+
+attributeType ( revspaceAttributeType:3 NAME 'articleName'
+	DESC 'RevSpace stock management item name'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	ORDERING caseIgnoreOrderingMatch )
+
+attributeType ( revspaceAttributeType:6 NAME 'barCode'
+	DESC 'RevSpace stock management item barcode'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	ORDERING caseIgnoreOrderingMatch )
+
+attributeType ( revspaceAttributeType:4 NAME 'stock'
+        DESC 'Amount of items in stock'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        EQUALITY integerMatch
+        SINGLE-VALUE )
+
+attributeType ( revspaceAttributeType:5 NAME 'price'
+        DESC 'Price per item in eurocent'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+        EQUALITY integerMatch
+        SINGLE-VALUE )
+
+objectclass ( revspaceObjectClass:2 NAME 'revspaceProduct'
+        DESC 'mixin RevSpace product details'
+        STRUCTURAL
+ 	MUST ( articleName $ price )
+        MAY ( stock $ barCode ) )
+

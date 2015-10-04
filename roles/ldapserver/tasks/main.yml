@@ -13,3 +13,43 @@
   with_items:
     - slapd
     - ldap-utils
+
+- name: Set ldap OLC password
+  lineinfile: "dest='/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif' line='olcRootPW: {{slapd_admin_pass}}' insertafter='^modifyTimeStamp:' regexp='^olcRootPW'"
+
+- name: Copy revspace schema and olcConfig
+  copy: src={{item.src}} dest=/etc/ldap/{{item.dst}} owner=openldap group=openldap mode=0644
+  with_items:
+    - { src: "revspace.schema", dst: "schema/revspace.schema" }
+    - { src: "cn={4}revspace.ldif", dst: "slapd.d/cn=config/cn=schema/cn={4}revspace.ldif" }
+
+- name: Create directory for certificates
+  file: path={{slapd_certpath}} state=directory owner=openldap group=openldap mode=0700
+
+- name: Copy TLS files
+  copy: src=ssl/{{item}} dest={{slapd_certpath}}/{{item}} owner=openldap group=openldap mode=0400
+  with_items:
+    - cacert.pem
+    - server-key.pem
+    - server-cert.pem
+
+- name: Template olc edits
+  template: src={{item}}.j2 dest=/etc/ldap/{{item}}.ldif owner=openldap group=openldap mode=0600
+  with_items:
+    - olcAccess
+    - olcSSL
+  register: olcedits
+
+- name: Update olcConfig
+  command: ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/ldap/{{item}}.ldif
+  with_items:
+    - olcAccess
+    - olcSSL
+  when: olcedits|changed
+  ignore_errors: true
+
+- name: Enable SSL listener
+  lineinfile: dest=/etc/default/slapd line='SLAPD_SERVICES="ldap:/// ldaps:/// ldapi:///"' regexp="^SLAPD_SERVICES"
+
+- name: Restart slapd
+  service: name=slapd state=restarted
