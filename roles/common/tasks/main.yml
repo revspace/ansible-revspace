@@ -20,6 +20,9 @@
       - nmap
       - screen
       - ncdu
+      - zsh
+      - top
+      - htop
     when: ansible_os_family == 'Debian'
     tags:
       - debian
