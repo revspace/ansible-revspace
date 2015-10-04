@@ -1,5 +1,7 @@
 ---
 
-ldap_base:      dc=space,dc=revspace,dc.nl
+ldap_base:      dc=space,dc=revspace,dc=nl
 ldap_server:    ldap.space.revspace.nl
-ldap_uri:       ldap://{{ldap_server}}:389
+ldap_uri:       ldaps://{{ldap_server}}:636
+ldap_cafile:    sub.class1.server.sha2.ca.pem
+ldap_cipher_suite:  "SECURE256:!AES-128-CBC:!ARCFOUR-128:!CAMELLIA-128-CBC:!3DES-CBC:!CAMELLIA-128-CBC"

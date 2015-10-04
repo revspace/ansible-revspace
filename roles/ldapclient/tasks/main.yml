@@ -32,6 +32,21 @@
       - ldapclient
       - logingroups
 
+  - name: Copy CA certificate
+    copy: src={{item}} dest=/etc/ldap/{{item}} owner=root group=root mode=0644
+    with_items:
+      - "{{ldap_cafile}}"
+
+  - name: Template ldap.conf
+    template: src={{item}}.j2 dest=/etc/ldap/{{item}} owner=root group=root mode=0644
+    with_items:
+      - ldap.conf
+
+  - name: Template nslcd.conf
+    template: src={{item}}.j2 dest=/etc/{{item}} owner=root group=root mode=0644
+    with_items:
+      - nslcd.conf
+
   - name: Disable nscd service
     service: name=nscd state=stopped enabled=false
     tags:
