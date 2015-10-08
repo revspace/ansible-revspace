@@ -19,3 +19,10 @@ TLS_CIPHER_SUITE {{ldap_cipher_suite}}
 TLS_PROTOCOL_MIN 3.3
 TLS_REQCERT demand
 TLS_CRLCHECK none
+
+# Sudo settings
+SUDOERS_BASE ou=SUDOers,{{ldap_base}}
+#SUDOERS_SEARCH_FILTER objectClass=sudoRole
+SUDOERS_TIMED yes
+#SUDOERS_DEBUG 1
+

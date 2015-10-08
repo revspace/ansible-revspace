@@ -25,12 +25,14 @@
     tags:
       - ldapclient
       - logingroups
+    when: logingroups is defined
 
   - name: Limit access to listed groups
     lineinfile: dest=/etc/pam.d/common-auth line="auth required pam_listfile.so onerr=fail item=group sense=allow file=/etc/login.group.allowed" owner=root group=root mode=0644 regexp="pam_listfile,*login\.group\.allowed" insertbefore=EOF
     tags:
       - ldapclient
       - logingroups
+    when: logingroups is defined
 
   - name: Copy CA certificate
     copy: src={{item}} dest=/etc/ldap/{{item}} owner=root group=root mode=0644
