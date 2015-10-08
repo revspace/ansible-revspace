@@ -15,13 +15,15 @@
     - ldap-utils
 
 - name: Set ldap OLC password
-  lineinfile: "dest='/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif' line='olcRootPW: {{slapd_admin_pass}}' insertafter='^modifyTimeStamp:' regexp='^olcRootPW'"
+  lineinfile: "dest='/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif' line='olcRootPW: {{slapd_config_pass}}' insertafter='^modifyTimeStamp:' regexp='^olcRootPW'"
 
 - name: Copy revspace schema and olcConfig
   copy: src={{item.src}} dest=/etc/ldap/{{item.dst}} owner=openldap group=openldap mode=0644
   with_items:
     - { src: "revspace.schema", dst: "schema/revspace.schema" }
+    - { src: "sudoers.schema", dst: "schema/sudoers.schema" }
     - { src: "cn={4}revspace.ldif", dst: "slapd.d/cn=config/cn=schema/cn={4}revspace.ldif" }
+    - { src: "cn={5}sudoers.ldif", dst: "slapd.d/cn=config/cn=schema/cn={5}sudoers.ldif" }
 
 - name: Create directory for certificates
   file: path={{slapd_certpath}} state=directory owner=openldap group=openldap mode=0700

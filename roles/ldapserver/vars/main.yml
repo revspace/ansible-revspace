@@ -1,6 +1,7 @@
 ---
 
-slapd_admin_pass:   "chocomate"
+#slapd_config_pass:  ""
+#slapd_admin_pass:   ""
 slapd_domain:       "space.revspace.nl"
 slapd_root:         "dc=space,dc=revspace,dc=nl"
 slapd_certpath:     "/etc/ldap/certs/"

@@ -10,3 +10,4 @@
   user: root 
   roles: 
     - ldapserver
+    - radiusserver
