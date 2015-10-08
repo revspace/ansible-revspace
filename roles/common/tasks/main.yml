@@ -8,7 +8,7 @@
       - less
       - bash
       - rsync
-      - sudo
+      - sudo-ldap
       - unattended-upgrades
       - apt-listchanges
       - debconf-utils
@@ -21,7 +21,6 @@
       - screen
       - ncdu
       - zsh
-      - top
       - htop
     when: ansible_os_family == 'Debian'
     tags:
