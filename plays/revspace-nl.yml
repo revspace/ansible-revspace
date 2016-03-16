@@ -1,0 +1,142 @@
+- hosts: revspace.nl
+  gather_facts: yes
+  vars:
+  user: root
+  become: yes
+  roles:
+    - common
+  tasks:
+    - name: Groups
+      group: name={{item.name}} gid={{item.gid}} state=present
+      with_items:
+        - { name: 'boardgit', gid: 901 }
+        - { name: 'pass',     gid: 902 }
+        - { name: 'mqtt2web', gid: 903 }
+
+    - name: Create users
+      user: name="{{item.name}}" uid="{{item.uid}}" group="{{item.group | default(item.name)}}" comment="{{item.gecos}}" state=present shell="{{item.shell | default('/bin/bash')}}" createhome=yes
+      with_items:
+        - { name: 'boardgit',   uid: 901, gecos: "Board Git Repository", shell: "/usr/bin/git-shell" }
+        - { name: 'pass',       uid: 902, gecos: "Board Pass Repository", shell: "/bin/sh" }
+        - { name: 'mqtt2web',   uid: 903, gecos: "mqtt2web gateway" }
+
+    - name: Create directories
+      file: dest="{{item.dir}}" owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" mode="{{item.mode | default('0755')}}" state=directory
+      with_items:
+        - { dir: '/etc/nginx/sites-available' }
+        - { dir: '/etc/lighttpd/conf-available' }
+        - { dir: '/etc/letsencrypt.sh' }
+        - { dir: '/var/www/well-known' }
+        - { dir: '/var/www/well-known/acme-challenge' }
+      tags:
+        - directories
+
+    - name: Template various configuration files
+      template: src="revspace-nl/{{item.src}}" dest="{{item.dest}}" owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" mode="{{item.mode | default('0644')}}"
+      with_items:
+        - { src: "nginx.conf.j2",                   dest: "/etc/nginx/nginx.conf" }
+        - { src: "nginx-sites-revspace.nl.j2",      dest: "/etc/nginx/sites-available/revspace.nl" }
+        - { src: "nginx-sites-hackmeldpunt.nl.j2",  dest: "/etc/nginx/sites-available/hackmeldpunt.nl" }
+        - { src: "lighttpd.conf.j2",                dest: "/etc/lighttpd/lighttpd.conf" }
+        - { src: "lighttpd-revspace.conf.j2",       dest: "/etc/lighttpd/conf-available/01-revspace.conf" }
+        - { src: "letsencrypt-config.sh",           dest: "/etc/letsencrypt.sh/config.sh", mode: "0755" }
+        - { src: "letsencrypt-domains.txt.j2",      dest: "/etc/letsencrypt.sh/domains.txt" }
+      tags:
+        - templates
+
+    - name: Install software packages
+      apt: name={{item}} state=installed
+      with_items:
+        - nginx-full
+        - mosquitto
+        - php5
+        - php5-mysql
+        - php5-cgi
+        - php5-gd
+        - fail2ban
+        - postfix
+        - mariadb-server
+        - mariadb-client
+        - lighttpd
+        - python-mysqldb
+        - cpanminus
+        - make
+        - git
+        - links
+        - curl
+        - wget
+        - liblinux-epoll-perl
+      tags:
+        - apt
+
+    - name: CPAN modules
+      cpanm: name={{item}}
+      with_items:
+        - Net::MQTT::Simple
+      tags:
+        - cpan
+        - perl
+
+    - name: Delete stuff
+      file: name={{item}} state=absent
+      with_items:
+        - /etc/nginx/sites-enabled/default
+
+    - name: Git clone stuff
+      git: clone=yes dest={{item.dest}} repo={{item.src}} update=yes
+      with_items:
+        - { src: "https://github.com/lukas2511/letsencrypt.sh", dest: "/root/letsencrypt.sh/" }
+        - { src: "https://github.com/juerd/mqtt2web", dest: "/home/mqtt2web/mqtt2web-git/", user: 'mqtt2web' }
+      become_user: "{{item.user | default('root')}}"
+      tags:
+        - git
+
+    - name: Create symlinks
+      file: src="{{item.src}}" dest="{{item.dest}}" owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" state=link
+      with_items:
+        - { src: "/etc/nginx/sites-available/revspace.nl",              dest: "/etc/nginx/sites-enabled/revspace.nl" }
+        - { src: "/etc/nginx/sites-available/hackmeldpunt.nl",          dest: "/etc/nginx/sites-enabled/hackmeldpunt.nl" }
+        - { src: "/etc/lighttpd/conf-available/01-revspace.conf",       dest: "/etc/lighttpd/conf-enabled/01-revspace.conf" }
+        - { src: "/etc/lighttpd/conf-available/10-accesslog.conf",      dest: "/etc/lighttpd/conf-enabled/10-accesslog.conf" }
+        - { src: "/etc/lighttpd/conf-available/10-fastcgi.conf",        dest: "/etc/lighttpd/conf-enabled/10-fastcgi.conf" }
+        - { src: "/etc/lighttpd/conf-available/15-fastcgi-php.conf",    dest: "/etc/lighttpd/conf-enabled/15-fastcgi-php.conf" }
+        - { src: "/root/letsencrypt.sh/letsencrypt.sh",                 dest: "/etc/letsencrypt.sh/letsencrypt.sh" }
+
+    - name: Create dhparam.pem
+      command: creates=/etc/ssl/certs/dhparam.pem openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+      tags:
+        - dhparams
+
+    - name: MySQL Database
+      mysql_db: name=revspacenl state=present
+      tags:
+        - mysql
+
+    - name: MySQL credentials
+      mysql_user: name="revspacenl" password="eenheidsworst"  priv="revspacenl.*:ALL" state=present
+      tags:
+        - mysql
+
+    - name: Fix permissions
+      file: dest={{item.name}} owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" mode="{{item.mode | default('0644')}}"
+      with_items:
+        - { name: "/etc/ssl/certs/dhparam.pem" }
+      tags:
+        - dhparams
+
+    - name: MQTT2Web cronjob
+      cron: user=mqtt2web special_time=reboot name=mqtt2web job="screen -dmS mqtt2web perl /home/mqtt2web/mqtt2web/mqtt2web.pl"  state=present
+      tags:
+        - mqtt2web
+
+    - name: Enable services
+      service: name={{item}} state=restarted
+      with_items:
+        - nginx
+        - lighttpd
+        - postfix
+        - mysql
+      tags:
+        - services
+
+  handlers:
