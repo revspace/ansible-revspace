@@ -65,7 +65,9 @@
         - links
         - curl
         - wget
+        - memcached
         - liblinux-epoll-perl
+        - imagemagick
       tags:
         - apt
 
@@ -140,3 +142,6 @@
         - services
 
   handlers:
+
+
+# FIXME: update-letsencrypt cronjob
