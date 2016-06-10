@@ -49,6 +49,16 @@
     with_items:
       - nslcd.conf
 
+  - name: Update /etc/nsswitch.conf
+    lineinfile: "dest=/etc/nsswitch.conf line='{{item}}:		compat ldap' regexp='^{{item}}'"
+    with_items:
+      - passwd
+      - group
+      - shadow
+
+  - name: Update /etc/nsswitch.conf
+    lineinfile: "dest=/etc/nsswitch.conf line='sudoers:		ldap' regexp='^sudoers' insertbefore=EOF"
+
   - name: Disable nscd service
     service: name=nscd state=stopped enabled=false
     tags:
