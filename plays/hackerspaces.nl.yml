@@ -1,0 +1,104 @@
+# Work in progress....
+
+---
+
+- hosts: new-hackerspaces.nl
+  gather_facts: yes
+  vars:
+  user: root
+  become: yes
+  roles:
+    - common
+  tasks:
+    - name: Create users
+      user: name="{{item.name}}" uid="{{item.uid}}" group="{{item.group | default(item.name)}}" comment="{{item.gecos}}" state=present shell="{{item.shell | default('/bin/bash')}}" createhome=yes
+      with_items:
+        - { name: 'foobar',   uid: 1000, gecos: "FooBar@Revspace.nl", shell: "/usr/bin/bash" }
+
+    - name: Create directories
+      file: dest="{{item.dir}}" owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" mode="{{item.mode | default('0755')}}" state=directory
+      with_items:
+        - { dir: '/etc/lighttpd/conf-available' }
+        - { dir: '/etc/letsencrypt.sh' }
+        - { dir: '/var/www/well-known' }
+        - { dir: '/var/www/well-known/acme-challenge' }
+      tags:
+        - directories
+
+    - name: Template various configuration files
+      template: src="revspace-nl/{{item.src}}" dest="{{item.dest}}" owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" mode="{{item.mode | default('0644')}}"
+      with_items:
+        - { src: "lighttpd.conf.j2",                dest: "/etc/lighttpd/lighttpd.conf" }
+        - { src: "letsencrypt-config.sh",           dest: "/etc/letsencrypt.sh/config.sh", mode: "0755" }
+        - { src: "letsencrypt-domains.txt.j2",      dest: "/etc/letsencrypt.sh/domains.txt" }
+      tags:
+        - templates
+
+    - name: Install software packages
+      apt: name={{item}} state=installed
+      with_items:
+        - php5
+        - php5-mysql
+        - php5-cgi
+        - fail2ban
+        - postfix
+        - mariadb-server
+        - mariadb-client
+        - lighttpd
+        - python-mysqldb
+        - git
+        - links
+        - curl
+        - wget
+      tags:
+        - apt
+
+    - name: Git clone stuff
+      git: clone=yes dest={{item.dest}} repo={{item.src}} update=yes
+      with_items:
+        - { src: "https://github.com/lukas2511/letsencrypt.sh", dest: "/root/letsencrypt.sh/" }
+      become_user: "{{item.user | default('root')}}"
+      tags:
+        - git
+
+    - name: Create symlinks
+      file: src="{{item.src}}" dest="{{item.dest}}" owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" state=link
+      with_items:
+        - { src: "/etc/lighttpd/conf-available/01-revspace.conf",       dest: "/etc/lighttpd/conf-enabled/01-revspace.conf" }
+        - { src: "/etc/lighttpd/conf-available/10-accesslog.conf",      dest: "/etc/lighttpd/conf-enabled/10-accesslog.conf" }
+        - { src: "/etc/lighttpd/conf-available/10-fastcgi.conf",        dest: "/etc/lighttpd/conf-enabled/10-fastcgi.conf" }
+        - { src: "/etc/lighttpd/conf-available/15-fastcgi-php.conf",    dest: "/etc/lighttpd/conf-enabled/15-fastcgi-php.conf" }
+        - { src: "/root/letsencrypt.sh/letsencrypt.sh",                 dest: "/etc/letsencrypt.sh/letsencrypt.sh" }
+
+    - name: Create dhparam.pem
+      command: creates=/etc/ssl/certs/dhparam.pem openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+      tags:
+        - dhparams
+
+    - name: MySQL Database
+      mysql_db: name=hackerspacesnl state=present
+      tags:
+        - mysql
+
+    - name: MySQL credentials
+      mysql_user: name="hackerspacesnl" password="eechoW8vieghoh8Iu9beophig3siCahk"  priv="hackerspacesnl.*:ALL" state=present
+      tags:
+        - mysql
+
+    - name: Fix permissions
+      file: dest={{item.name}} owner="{{item.owner | default('root')}}" group="{{item.group | default('root')}}" mode="{{item.mode | default('0644')}}"
+      with_items:
+        - { name: "/etc/ssl/certs/dhparam.pem" }
+      tags:
+        - dhparams
+
+    - name: Enable services
+      service: name={{item}} state=restarted
+      with_items:
+        - lighttpd
+        - postfix
+        - mysql
+      tags:
+        - services
+
+  handlers:
