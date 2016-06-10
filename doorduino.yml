@@ -1,0 +1,7 @@
+---
+
+- hosts: doorduino
+  sudo: no
+  user: root
+  roles:
+    - doorduino

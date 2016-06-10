@@ -46,6 +46,21 @@
        - opkg
        - package
 
+  - name: Install required software (Debian)
+    when: "ansible_distribution == 'Debian'"
+    apt: name={{item}} state=installed
+    with_items:
+      - perl
+      - screen
+      - strace
+      - sudo
+      - rsync
+      - git
+      - curl
+      - perl
+      - perl-modules
+      - python
+
   - name: Install required software (raspi/fedora)
     when: "ansible_distribution == 'Fedora'"
     yum: name={{item}} state=installed

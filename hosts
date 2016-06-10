@@ -1,32 +1,42 @@
-[revspace]
+[revspace:children]
+vm-vms
+physical
+memberservers
+
+[physical]
 gateway
-mux
-pov
-eeprom
-flux
-squeezebox          # Squeeze server
 squeezeslave-klusbunker # Softsqueeze klusbunker
-wiki                # Shell (virt / mux)
 vm                  # New VM server
 
 [ldap]
-10.42.43.197        # New ldap / test
+ldap                # New ldap / test
 
 [vm-vms]
 manage              # Board / Management doos (nog niet af)
 shell-jessie        # Member shell doos met debian jessie/stable
 shell-sid           # Member shell doos met debian sid/unstable
-
-[mux-vms]
-eeprom
-flux
-max232
-wesm                # unmanaged
-minemu              # unmanaged
-mediaserver         # Squeezeserver
+#eeprom             # Oude ldap, uit
+flux                # Radius server
+squeezebox          # Squeeze server
 pov
 monitor
-wiki
+ldap                # New ldap server
+influxdb            # Influxdb
+beta                ansible_ssh_host=10.42.43.76 ansible_ssh_user=board
+revspace.nl         ansible_ssh_host=141.138.201.190
+new-hackerspaces.nl ansible_ssh_host=10.42.43.244
+
+[memberservers]
+shell-jessie        # Member shell doos met debian jessie/stable
+shell-sid           # Member shell doos met debian sid/unstable
+mediaserver
+
+[doorduino]
+doorduino-voordeur    # Raspi
+doorduino-werkplaats  # Raspi
+doorduino-kantoor     # Raspi
+doorduino-sparkshack  # openwrt
+doorpi  ansible_ssh_host=10.42.43.230
 
 [revspace-unmanaged]
 cam1                  # Cam
@@ -39,22 +49,12 @@ poe                   # Switch?
 habtracker            # Windows / Habtracker
 ledbanner             # Ledbanner / Fedora
 controller            # Wifi controller
-doorduino-voordeur    # Raspi
-doorduino-werkplaats  # Raspi
-doorduino-kantoor     # Raspi
-doorduino-sparkshack  # openwrt
 
 [revspace-noping-unknown]
-lcd           # mux -> off
-fuse
-nor           # mux -> off
-pad           # mux -> off
-cathode       # mux -> off
-battery
+fuse          # radius
 oog
 door
 anon
-breadboard
 wikileaks
 foundry
 relais
