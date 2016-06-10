@@ -42,6 +42,7 @@
       - kmod-usb2
       - kmod-usb-serial
       - kmod-usb-serial-ftdi
+      - avrdude
     tags:
        - opkg
        - package
@@ -60,6 +61,10 @@
       - perl
       - perl-modules
       - python
+      - avrdude
+    tags:
+      - apt
+      - package
 
   - name: Install required software (raspi/fedora)
     when: "ansible_distribution == 'Fedora'"
@@ -68,12 +73,46 @@
       - perl
       - sudo
       - curl
+      - avrdude
       - FIXME
     tags:
        - yum
        - package
 
+  - name: Create udev rules
+    copy: src=udev-99-doorduino.rules dest=/etc/udev/rules.d/99-doorduino.rules
+    tags:
+      - udev
+
+  - name: Create directories for doorduino
+    file: name={{item}} state=directory owner=pi group=pi
+    with_items:
+      - /home/pi/ibuttons.acl.d 
+    tags:
+      - directory
+
   - name: Download latest doorduino.pl
-    copy: src=doorduino.pl dest=/home/pi/doorduino.pl mode=0755 owner=pi group=pi
+    copy: src={{item}} dest=/home/pi/{{item}} mode=0755 owner=pi group=pi
+    with_items:
+      - doorduino.pl
+      - restartloop.sh
+      - avrdude.conf
     tags:
       - copy
+      - doorduino
+
+  - name: Create ircname files
+    template: src=ircname.j2 dest="/home/pi/ircname.doorduino_{{item.serial}}"
+    with_items:
+      - "{{doorduinos}}"
+    tags:
+      - doorduino
+
+  - name: Create @reboot cronjob to start doorduino service (FIXME, Systemd unit files)
+    cron: special_time=reboot user=pi job="screen -dmS {{item.name}} /home/pi/restartloop.sh /dev/doorduino_{{item.serial}}" name="doorduino_{{item.name}}"
+    with_items:
+      - "{{doorduinos}}"
+    tags:
+      - cron
+      - service
+

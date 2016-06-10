@@ -1,0 +1,7 @@
+---
+
+doorduinos:
+  - { name: "test1", serial: "009FA161" }
+  - { name: "test2", serial: "009FA51E" }
+  - { name: "test3", serial: "00A04269" }
+  - { name: "test4", serial: "00A054CD" }

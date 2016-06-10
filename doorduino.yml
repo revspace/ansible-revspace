@@ -1,7 +1,7 @@
 ---
 
 - hosts: doorduino
-  sudo: no
+  become: no
   user: root
   roles:
     - doorduino
