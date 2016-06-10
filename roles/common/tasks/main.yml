@@ -22,6 +22,8 @@
       - ncdu
       - zsh
       - htop
+      - vim
+      - ack-grep
     when: ansible_os_family == 'Debian'
     tags:
       - debian
@@ -58,3 +60,8 @@
       - pubkey
       - debian
 
+  - name: Set vim as default editor
+    alternatives: name=editor path=/usr/bin/vim.basic
+    tags:
+      - editor
+      - debian
