@@ -196,12 +196,6 @@
     tags:
       - readonly
 
-#  - name: Set raspbian to read-only mode
-#    template: dest=/boot/cmdline.txt 
-
 # TODO:
-# - set hostname
-# - mount filesystems readonly
 # - logging via rsyslog / remote syslogging
-# - remove unneeded  packages:
 # avrdude -c arduino -p m328p -P /dev/ttyUSB1 -b 57600 -U flash:w:doorduino2.ino.hex
