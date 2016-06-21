@@ -1,6 +1,12 @@
 ---
 # tasks file for doorduino
 
+  - name: Set filesystem writable
+    shell: /bin/mount -f -o remount,rw /
+    always_run: yes
+    tags:
+      - readonly
+
   - name: Create 'pi' group
     group: gid=1000 name=pi state=present system=no
     tags:
@@ -10,6 +16,31 @@
     user: comment='Doorduino User' group=pi createhome=yes name=pi password="{{passwordpi}}" state=present update_password=always shell=/bin/ash
     tags:
       - user
+
+  - name: Set authorized_keys for 'pi' user
+    authorized_key: user=pi key={{item}} manage_dir=yes
+    with_items:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDi4OKCh9iHFPUHJiG8asfZXTU544IGfhmTL5KZwmNX4BhXhtFi+BtI8eCCBWQOvWTMKbzMWJqn2m6z2ONAWce0eFCe4dnXDlOvkqXfX67/d1j+IeBAOJo0+55ZkwryzJdb9dY9GGwEFBPdJw9s2QX6NdhbQlwEFM/NsbGD9LNhJJ5Kl/3E7++fj09rqGptWNKEHAMpw9JTBx6JNbRs2bTWNEWXwa7o94KqheztHz+J57zc/UXVzbzcTXyqb3FLKE2ofZ0DsnOLkc9JRfNKKvQmYjupxCO53GzzhAeCp8Pk+YnlBrRAchwtG5YRwZv7X80Bl5r9VKoGhHeL3SK2+z8X root@gateway"
+      - "{{rootpubkeys}}"
+    tags:
+      - pubkeys
+
+  - name: Place pubkeys for root account
+    authorized_key: user=root key={{item}} manage_dir=yes
+    with_items:
+      - "{{rootpubkeys}}"
+    tags:
+      - pubkeys
+
+  - name: Set hostname
+    hostname: name={{inventory_hostname_short}}
+    tags:
+      - hostname
+
+  - name: Set timezone
+    file: src=/usr/share/zoneinfo/Europe/Amsterdam dest=/etc/localtime owner=root group=root state=link
+    tags:
+      - timezone
 
   - name: Install required software (OpenWRT)
     when: "ansible_distribution == 'OpenWrt'"
@@ -67,6 +98,26 @@
       - apt
       - package
 
+  - name: Remove useless software (Debian)
+    when: "ansible_distribution == 'Debian'"
+    apt: name={{item}} state=absent
+    with_items:
+      - triggerhappy
+      - manpages
+      - manpages-dev
+      - man-db
+      - libx11
+      - logrotate
+      - dbus
+      - xserver-common
+      - bluez-firmware
+      - geoip-database
+      - libdns100
+    tags:
+      - apt
+      - package
+
+
   - name: Install required software (raspi/fedora)
     when: "ansible_distribution == 'Fedora'"
     yum: name={{item}} state=installed
@@ -117,3 +168,40 @@
       - cron
       - service
 
+  - name: Sysctl settings
+    sysctl: name="{{item.name}}" value=="{{item.value}}" sysctl_file=/etc/sysctl.conf state=present sysctl_set=yes
+    with_items:
+      - { name: "kernel.panic", value: "10" }
+    tags:
+      - sysctl
+
+  - name: Create cmdline.txt on pi (readonly mode)
+    copy: content="{{boot_cmdline}}" dest=/boot/cmdline.txt owner=root group=root mode=755
+    when: "'bcm2708.boardrev' in ansible_cmdline"
+    tags:
+      - pi
+
+  - name: Set filesystems in readonly
+    mount: name={{item.name}} opts="{{item.opts}}" src="{{item.dev}}" state=mounted fstype="{{item.type}}" passno="{{item.pass}}"
+    with_items:
+      - { name: '/',        dev: '/dev/mmcblk0p2', type: 'ext4', opts: 'defaults,ro,noatime', pass: '2' }
+      - { name: '/boot',    dev: '/dev/mmcblk0p1', type: 'vfat', opts: 'defaults,ro',         pass: '1' }
+    ignore_errors: true
+    tags:
+      - fstab
+
+  - name: Set filesystem readonly
+    shell: /bin/mount -f -o remount,ro /
+    always_run: yes
+    tags:
+      - readonly
+
+#  - name: Set raspbian to read-only mode
+#    template: dest=/boot/cmdline.txt 
+
+# TODO:
+# - set hostname
+# - mount filesystems readonly
+# - logging via rsyslog / remote syslogging
+# - remove unneeded  packages:
+# avrdude -c arduino -p m328p -P /dev/ttyUSB1 -b 57600 -U flash:w:doorduino2.ino.hex
