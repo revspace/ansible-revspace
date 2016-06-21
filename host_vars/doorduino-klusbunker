@@ -1,0 +1,7 @@
+---
+
+doorduinos:
+  - { name: "bord1", serial: "00A0521F" }
+  - { name: "bord2", serial: "0100AB68" }
+  - { name: "bord3", serial: "0100AB7C" }
+  - { name: "bord4", serial: "0100AB83" }

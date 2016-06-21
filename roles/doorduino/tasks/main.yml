@@ -15,6 +15,7 @@
     when: "ansible_distribution == 'OpenWrt'"
     opkg: name={{item}} state=installed
     with_items:
+      - ash
       - perl
       - screen
       - strace
