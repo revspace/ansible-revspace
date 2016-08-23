@@ -38,9 +38,10 @@
       - hostname
 
   - name: Set timezone
-    file: src=/usr/share/zoneinfo/Europe/Amsterdam dest=/etc/localtime owner=root group=root state=link
+    file: src=/usr/share/zoneinfo/Europe/Amsterdam dest=/etc/localtime owner=root group=root state=link force=yes
     tags:
       - timezone
+    ignore_errors: yes
 
   - name: Install required software (OpenWRT)
     when: "ansible_distribution == 'OpenWrt'"
@@ -81,7 +82,7 @@
 
   - name: Install required software (Debian)
     when: "ansible_distribution == 'Debian'"
-    apt: name={{item}} state=installed
+    apt: name={{item}} state=installed update_cache=yes cache_valid_time=3600
     with_items:
       - perl
       - screen

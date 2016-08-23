@@ -35,7 +35,7 @@ mediaserver
 doorduino-voordeur    # Raspi
 doorduino-werkplaats  # Raspi
 doorduino-kantoor     # Raspi
-doorduino-sparkshack  # openwrt
+doorduino-sparkshack  # raspi
 doorpi  ansible_ssh_host=10.42.43.230
 doorduino-klusbunker    # 4 doorduino's voor de kelder
 
