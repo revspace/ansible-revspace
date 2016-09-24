@@ -84,6 +84,7 @@
     when: "ansible_distribution == 'Debian'"
     apt: name={{item}} state=installed update_cache=yes cache_valid_time=3600
     with_items:
+      - ash
       - perl
       - screen
       - strace
@@ -95,6 +96,8 @@
       - perl-modules
       - python
       - avrdude
+      - rsyslog
+      - rsync
     tags:
       - apt
       - package
@@ -132,10 +135,33 @@
        - yum
        - package
 
+  - name: Stop and disable services
+    service: name={{item}} state=stopped enabled=no
+    with_items:
+      - bluetooth
+      - console-kit-daemon
+      - console-kit-log-system-start
+      - console-kit-log-system-stop
+      - console-kit-log-system-restart
+      - firewalld
+      - iprdump
+      - iprinit
+      - iprupdate
+      - NetworkManager
+      - polkit
+      - sendmail
+      - sm-client
+    ignore_errors: yes
+
   - name: Create udev rules
     copy: src=udev-99-doorduino.rules dest=/etc/udev/rules.d/99-doorduino.rules
     tags:
       - udev
+
+  - name: Copy rsyslog configuration
+    copy: src=rsyslog.conf dest=/etc/rsyslog.d/doorduino.conf owner=root group=root mode=0644
+    tags:
+      - rsyslog
 
   - name: Create directories for doorduino
     file: name={{item}} state=directory owner=pi group=pi
@@ -181,12 +207,14 @@
     when: "'bcm2708.boardrev' in ansible_cmdline"
     tags:
       - pi
+    ignore_errors: yes
 
   - name: Set filesystems in readonly
     mount: name={{item.name}} opts="{{item.opts}}" src="{{item.dev}}" state=mounted fstype="{{item.type}}" passno="{{item.pass}}"
     with_items:
-      - { name: '/',        dev: '/dev/mmcblk0p2', type: 'ext4', opts: 'defaults,ro,noatime', pass: '2' }
-      - { name: '/boot',    dev: '/dev/mmcblk0p1', type: 'vfat', opts: 'defaults,ro',         pass: '1' }
+      - { name: '/',        dev: '/dev/mmcblk0p2', type: 'ext4',  opts: 'defaults,ro,noatime', pass: '2' }
+      - { name: '/boot',    dev: '/dev/mmcblk0p1', type: 'vfat',  opts: 'defaults,ro',         pass: '1' }
+      - { name: '/tmp',     dev: 'tmpfs',          type: 'tmpfs', opts: 'defaults',            pass: '0' }
     ignore_errors: true
     tags:
       - fstab
