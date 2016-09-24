@@ -4,6 +4,7 @@
   - name: Set filesystem writable
     shell: /bin/mount -f -o remount,rw /
     always_run: yes
+    warn: no
     tags:
       - readonly
 
@@ -16,6 +17,8 @@
     user: comment='Doorduino User' group=pi createhome=yes name=pi password="{{passwordpi}}" state=present update_password=always shell=/bin/ash
     tags:
       - user
+      - secrets
+    ignore_errors: yes
 
   - name: Set authorized_keys for 'pi' user
     authorized_key: user=pi key={{item}} manage_dir=yes
@@ -24,6 +27,8 @@
       - "{{rootpubkeys}}"
     tags:
       - pubkeys
+      - secrets
+    ignore_errors: yes
 
   - name: Place pubkeys for root account
     authorized_key: user=root key={{item}} manage_dir=yes
