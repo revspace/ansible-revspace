@@ -2,9 +2,8 @@
 # tasks file for doorduino
 
   - name: Set filesystem writable
-    shell: /bin/mount -f -o remount,rw /
+    shell: warn=no /bin/mount -f -o remount,rw /
     always_run: yes
-    warn: no
     tags:
       - readonly
 
