@@ -81,7 +81,7 @@
         - mysql
 
     - name: MySQL credentials
-      mysql_user: name="hackerspacesnl" password="eechoW8vieghoh8Iu9beophig3siCahk"  priv="hackerspacesnl.*:ALL" state=present
+      mysql_user: name="hackerspacesnl" password="FIXME"  priv="hackerspacesnl.*:ALL" state=present
       tags:
         - mysql
 
