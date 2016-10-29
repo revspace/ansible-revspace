@@ -1,6 +1,6 @@
 ---
 
-- hosts: shell-jessie
+- hosts: shell-jessie:shell-sid
   sudo: no
   user: root
   roles:

@@ -27,11 +27,8 @@ base {{ldap_base}}
 # SSL options
 ssl on
 tls_reqcert demand
-tls_cacertfile /etc/ldap/{{ldap_cafile}}
-tls_ciphers {{ldap_cipher_suite}}
-# Missing options:
-#TLS_PROTOCOL_MIN 3.3
-#TLS_CRLCHECK none
+tls_cacertfile /etc/ssl/certs/ca-certificates.crt
+#tls_ciphers {{ldap_cipher_suite}}
 
 # The search scope.
 #scope sub

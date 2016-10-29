@@ -14,8 +14,8 @@ URI     {{ldap_uri}}
 #DEREF      never
 
 # TLS certificates (needed for GnuTLS)
-TLS_CACERT  /etc/ldap/{{ldap_cafile}}
-TLS_CIPHER_SUITE {{ldap_cipher_suite}}
+#TLS_CACERT /etc/ldap/{{ldap_cafile}}
+#TLS_CIPHER_SUITE {{ldap_cipher_suite}}
 TLS_PROTOCOL_MIN 3.3
 TLS_REQCERT demand
 TLS_CRLCHECK none
