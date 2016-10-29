@@ -6,8 +6,9 @@
 - hosts: ldap
   gather_facts: yes
   vars:
-  sudo: no
+  become: no
   user: root 
   roles: 
+    - dehydrated
     - ldapserver
     - radiusserver
