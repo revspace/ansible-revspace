@@ -1,5 +1,4 @@
 # AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
-# CRC32 b14e01de
 dn: cn={5}sudoers
 objectClass: olcSchemaConfig
 cn: {5}sudoers

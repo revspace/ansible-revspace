@@ -1,5 +1,4 @@
 # AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.
-# CRC32 3507f72a
 dn: cn={4}revspace
 objectClass: olcSchemaConfig
 cn: {4}revspace
