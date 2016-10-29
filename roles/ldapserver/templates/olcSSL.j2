@@ -2,13 +2,13 @@
 dn: cn=config
 changetype: modify
 replace: olcTLSCACertificateFile
-olcTLSCACertificateFile: {{slapd_certpath}}/cacert.pem
+olcTLSCACertificateFile: {{slapd_certpath}}/fullchain.pem
 -
 replace: olcTLSCertificateKeyFile
-olcTLSCertificateKeyFile: {{slapd_certpath}}/server-key.pem
+olcTLSCertificateKeyFile: {{slapd_certpath}}/privkey.pem
 -
 replace: olcTLSCertificateFile
-olcTLSCertificateFile: {{slapd_certpath}}/server-cert.pem
+olcTLSCertificateFile: {{slapd_certpath}}/cert.pem
 -
 replace: olcTLSCipherSuite
 olcTLSCipherSuite: {{slapd_cipher_suite}}

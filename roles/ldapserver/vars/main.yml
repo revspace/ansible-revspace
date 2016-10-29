@@ -4,5 +4,5 @@
 #slapd_admin_pass:   ""
 slapd_domain:       "space.revspace.nl"
 slapd_root:         "dc=space,dc=revspace,dc=nl"
-slapd_certpath:     "/etc/ldap/certs/"
+slapd_certpath:     "/etc/dehydrated/certs/ldap.space.revspace.nl/"
 slapd_cipher_suite: "SECURE256:!AES-128-CBC:!ARCFOUR-128:!CAMELLIA-128-CBC:!3DES-CBC:!CAMELLIA-128-CBC"
