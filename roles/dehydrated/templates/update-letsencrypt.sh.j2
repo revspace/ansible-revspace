@@ -1,0 +1,4 @@
+#!/bin/sh
+
+/etc/dehydrated/dehydrated {{dehydrated_options}} > /tmp/update-certs.log 2>&1 || service {{letsencrypt_service}} restart
+

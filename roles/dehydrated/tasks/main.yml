@@ -1,0 +1,33 @@
+# Dehydrated Letsencrypt
+
+---
+
+  - name: Install required software
+    apt: name={{item}} state=installed
+    when: ansible_os_family == 'Debian'
+    with_items:
+      - git
+    tags:
+      - dehydrated
+      - apt
+
+  - name: Git clone and update dehydrated checkout
+    git: dest=/etc/dehydrated repo=https://github.com/lukas2511/dehydrated.git clone=yes update=yes track_submodules=yes
+
+  - name: Create directories
+    file: path="{{item}}" state=directory
+    with_items:
+      - "{{dehydrated_configd}}"
+      - "{{dehydrated_wellknown}}"
+
+  - name: Populate config.d directory
+    copy: src=empty.sh dest="{{dehydrated_configd}}/empty.sh" owner=root group=root mode=0755
+
+  - name: Template config-file
+    template: src=config.j2 dest=/etc/dehydrated/config owner=root group=root mode=0644
+
+  - name: Create cronjob for weekly updates
+    template: src=update-letsencrypt.sh.j2 dest=/etc/cron.weekly/update-letsencrypt.sh owner=root group=root mode=0755
+
+  - name: Permissions for scripts
+    file: path=/etc/dehydrated/dehydrated owner=root group=root mode=0755 

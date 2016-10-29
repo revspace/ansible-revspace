@@ -1,0 +1,19 @@
+---
+
+letsencrypt_service: "lighttpd"
+
+dehydrated_ipversion: "4"
+dehydrated_directory: "https://acme-v01.api.letsencrypt.org/directory"
+dehydrated_challengetype: "http-01"
+dehydrated_configd: "/etc/dehydrated/config.d"
+dehydrated_domainstxt: "${BASEDIR}/domains.txt"
+dehydrated_certdir: "${BASEDIR}/certs"
+dehydrated_accountdir: "${BASEDIR}/accounts"
+dehydrated_wellknown: "/var/www/dehydrated"
+dehydrated_keysize: 4096
+dehydrated_renewdays: "30"
+dehydrated_privatekeyrenew: "yes"
+dehydrated_privatekeyrollover: "no"
+dehydrated_keyalgo: "rsa"
+dehydrated_contactemail: ""
+dehydrated_options: "--cron"
