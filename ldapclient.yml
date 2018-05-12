@@ -1,7 +1,7 @@
 ---
 
-- hosts: shell-jessie:shell-sid
-  sudo: no
+- hosts: shell-jessie:shell-stretch:shell-sid:mediaserver
+  become: no
   user: root
   roles:
     - ldapclient

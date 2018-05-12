@@ -8,12 +8,10 @@ gateway
 squeezeslave-klusbunker # Softsqueeze klusbunker
 vm                  # New VM server
 
-[ldap]
-ldap                # New ldap / test
-
 [vm-vms]
 manage              # Board / Management doos (nog niet af)
 shell-jessie        # Member shell doos met debian jessie/stable
+shell-stretch
 shell-sid           # Member shell doos met debian sid/unstable
 #eeprom             # Oude ldap, uit
 flux                # Radius server
