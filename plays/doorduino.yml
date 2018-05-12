@@ -1,0 +1,12 @@
+# Installation instructions before ansible will work for openwrt/gl-inet devices
+#
+# Allow root-logins with certificate
+#
+
+- hosts: doorduino
+  gather_facts: no
+  vars:
+  sudo: no
+  user: root 
+  roles: 
+    - doorduino
