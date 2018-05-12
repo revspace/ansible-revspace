@@ -4,7 +4,7 @@
 ---
 
   - name: Install LDAP client software
-    apt: name={{item}} state=installed
+    apt: name={{item}} state=present
     when: ansible_os_family == 'Debian'
     with_items:
       - libpam-ldapd
