@@ -6,8 +6,8 @@
 - hosts: glinet
   gather_facts: no
   vars:
-  sudo: no
-  user: root 
+  become: no
+  user: root
   tasks:
 
   - name: Update opkg indexes

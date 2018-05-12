@@ -6,7 +6,7 @@
 - hosts: doorduino
   gather_facts: no
   vars:
-  sudo: no
-  user: root 
-  roles: 
+  become: no
+  user: root
+  roles:
     - doorduino
