@@ -1,0 +1,32 @@
+; {{ansible_managed}}
+;
+; DNS Zone file for Revspace systems, internal view
+;
+
+$TTL    7200
+@       IN      SOA     space.revspace.nl. board.revspace.nl. (
+                        {{ansible_date_time.epoch}} ; Serial
+                           7200         ; Refresh
+                           3600         ; Retry
+                         864000         ; Expire
+                           7200 )       ; Negative Cache TTL
+
+		IN		NS		{{wireguard_server}}.
+
+; All nodes in inventory
+{% for host in groups['all']|sort %}
+{% if hostvars[host]['internal_dns']|bool %}
+{%   if hostvars[host]['ansible_nodename'] is defined %}
+{{"%-40s IN A %s"|format(hostvars[host]['ansible_nodename']+".", hostvars[host]['ansible_default_ipv4']['address'])}}
+{%   else  %}
+; Undefined host {{host}}
+{%   endif %}
+{% else %}
+; {{host}} ; Excluded from internal DNS
+{% endif %}
+{% endfor %}
+
+; Extra DNS records (mostly CNAMES)
+{% for extra in extra_dns_internal %}
+{{"%-40s IN %s %s"|format(extra.name+".", extra.type|default("A"), extra.value)}}
+{% endfor %}

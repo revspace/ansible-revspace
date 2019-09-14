@@ -1,0 +1,4 @@
+---
+
+bind9_cache_size: "{{ansible_memory_mb.real.total|int * 1024 * 1024 / 4}}"
+bind9_listenon: "{{ansible_all_ipv4_addresses }}"

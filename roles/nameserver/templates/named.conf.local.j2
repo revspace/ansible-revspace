@@ -1,0 +1,12 @@
+// {{ansible_managed}}
+//
+
+zone "space.revspace.nl.nl" {
+        type master;
+            file "/etc/bind/zones/internal/db.space.revspace.nl";
+};
+
+zone "42.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/zones/db.10.42";
+};
