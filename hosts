@@ -6,9 +6,8 @@ memberservers
 [physical]
 gateway
 squeezeslave-klusbunker # Softsqueeze klusbunker
-vm                  # New VM server
 vm1         ansible_host=10.42.42.51
-vm2         ansible_host=10.42.42.52
+#vm2         ansible_host=10.42.42.52
 
 [vm1vms]
 #manage              # Board / Management doos (nog niet af)

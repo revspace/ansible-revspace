@@ -4,5 +4,10 @@
   become: yes
   roles:
     - common
-    - ldapclient
     - unattended-upgrade
+
+- hosts: memberservers
+  become: yes
+  roles:
+    - ldapclient
+
