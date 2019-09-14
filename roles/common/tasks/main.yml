@@ -34,6 +34,7 @@
     - zsh
     - htop
     - vim
+    - net-tools
     - postfix
     - ack-grep
   when: ansible_os_family == 'Debian'

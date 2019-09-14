@@ -1,0 +1,14 @@
+---
+
+# Just define empty vars, so we don't get complaints about undefined vars
+# any overruling to be done in group_vars or host_vars
+
+held_packages: []
+grub_default_extra: []
+grub_timeout: 5
+vmail_aliases: []
+host_authkeys_root: []
+sftp_server_path: "/usr/lib/openssh/sftp-server"
+sshd_group_config: []
+sshd_host_config: []
+unstable_repo: true
