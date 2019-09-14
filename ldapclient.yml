@@ -1,6 +1,6 @@
 ---
 
-- hosts: shell-jessie:shell-stretch:shell-sid:mediaserver
+- hosts: shell-jessie:shell-stretch:shell-sid:mediaserver:grafiekjes
   become: no
   user: root
   roles:

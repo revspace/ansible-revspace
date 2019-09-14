@@ -7,6 +7,8 @@ memberservers
 gateway
 squeezeslave-klusbunker # Softsqueeze klusbunker
 vm                  # New VM server
+vm1         ansible_host=10.42.42.51
+vm2         ansible_host=10.42.42.52
 
 [vm-vms]
 manage              # Board / Management doos (nog niet af)
@@ -23,6 +25,7 @@ influxdb            # Influxdb
 beta                ansible_ssh_host=10.42.43.76 ansible_ssh_user=board
 revspace.nl         ansible_ssh_host=141.138.201.190
 new-hackerspaces.nl ansible_ssh_host=10.42.43.244
+grafiekjes          ansible_ssh_host=2a03:10c3:269a:4242:5054:ff:fe46:6499
 
 [memberservers]
 shell-jessie        # Member shell doos met debian jessie/stable
