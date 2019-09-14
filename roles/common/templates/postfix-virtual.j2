@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+{% if vmail_aliases|length > 0 %}
+{% for alias in vmail_aliases %} 
+{{"%-40s %s"|format(alias.address+'@'+alias.domain, alias.mailbox)}}{% endfor %}
+{% endif %}

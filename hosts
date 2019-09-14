@@ -4,25 +4,19 @@ physical
 memberservers
 
 [physical]
-gateway
+gateway.space.revspace.nl
 squeezeslave-klusbunker # Softsqueeze klusbunker
-vm1         ansible_host=10.42.42.51
-#vm2         ansible_host=10.42.42.52
+vm1.space.revspace.nl
+vm2.space.revspace.nl
 
 [vm1vms]
-#manage              # Board / Management doos (nog niet af)
-shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/stable
-shell-stretch.space.revspace.nl
+shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
+shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
 shell-sid.space.revspace.nl           # Member shell doos met debian sid/unstable
 flux.space.revspace.nl                # Radius server
 mediaserver.space.revspace.nl          # Squeeze server
 pov.space.revspace.nl
-#monitor
 ldap.space.revspace.nl                # New ldap server
-#influxdb            # Influxdb
-#beta                ansible_ssh_host=10.42.43.76 ansible_ssh_user=board
-#revspace.nl         ansible_ssh_host=141.138.201.190
-#new-hackerspaces.nl ansible_ssh_host=10.42.43.244
 grafiekjes.space.revspace.nl
 
 [memberservers]
@@ -31,32 +25,6 @@ shell-sid.space.revspace.nl           # Member shell doos met debian sid/unstabl
 mediaserver.space.revspace.nl
 
 [doorduino]
-doorduino-voordeur    # Raspi
-doorduino-werkplaats  # Raspi
-doorduino-kantoor     # Raspi
-doorduino-sparkshack  # raspi
-doorpi  ansible_ssh_host=10.42.43.230
-doorduino-klusbunker    # 4 doorduino's voor de kelder
-
-[revspace_unmanaged]
-cam1                  # Cam
-cam2                  # Cam
-cam3                  # Cam
-cam4                  # Cam
-lasercutter           # Laser laptop
-laser                 # Laserprinter
-poe                   # Switch?
-habtracker            # Windows / Habtracker
-ledbanner             # Ledbanner / Fedora
-controller            # Wifi controller
-
-[revspace_noping_unknown]
-fuse          # radius
-oog
-door
-anon
-wikileaks
-foundry
-relais
-mosquitto       # alias voor squeezebox-klusbunker
-ias
+doorduino-voordeur.space.revspace.nl    ansible_host=10.42.42.42   # Raspi
+doorduino-zuid.space.revspace.nl        ansible_host=10.42.42.45
+doorduino-noord.space.revspace.nl       ansible_host=10.42.43.47

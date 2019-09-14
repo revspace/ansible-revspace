@@ -1,3 +1,0 @@
-rootpubkeys:
-  - "ssh-rsa some-pubkey Description"
-  - "ssh-rsa more-pubkeys Description"

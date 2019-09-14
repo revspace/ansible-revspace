@@ -11,3 +11,8 @@
   roles:
     - ldapclient
 
+- hosts: ldap.space.revspace.nl
+  become: yes
+  roles:
+    - ldapserver
+

@@ -34,6 +34,7 @@
     - zsh
     - htop
     - vim
+    - postfix
     - ack-grep
   when: ansible_os_family == 'Debian'
   tags:
@@ -78,7 +79,15 @@
     - { src: "authorized_keys-root.j2", dest: "/root/.ssh/authorized_keys", mode: "0600" }
     - { src: "limit-unstable.j2", dest: "/etc/apt/preferences.d/limit-unstable" }
     - { src: "sshd_config.j2",  dest: "/etc/ssh/sshd_config", notify: "reload sshd" }
-
+    - { src: "default-grub.j2",  dest: "/etc/default/grub", notify: "update grub" }
+    - { src: "issue", dest: "/etc/issue", mode: "0644" }
+    - { src: "issue.net", dest: "/etc/issue.net", mode: "0644" }
+    - { src: "resolv.conf.j2", dest: "/etc/resolv.conf", mode: "0644" }
+    - { src: "postfix-main-cf.j2", dest: "/etc/postfix/main.cf", notify: "reload postfix" }
+    - { src: "postfix-virtual.j2", dest: "/etc/postfix/virtual", notify: "postmap virtual" }
+    - { src: "aliases.j2", dest: "/etc/aliases", notify: "newaliases" }
+    - { src: "mailname.j2", dest: "/etc/mailname", notify: "reload postfix" }
+    - { src: "ntp.conf.j2", dest: "/etc/ntp.conf", mode: "0644", notify: "reload ntpd" }
 
 - name: Configure 'unstable' repository for debian
   apt_repository:
@@ -87,6 +96,7 @@
     filename: "debian-unstable-main"
   when:
     - "'Debian' in ansible_distribution"
+    - unstable_repo|bool
   tags:
     - unstable
     - debian

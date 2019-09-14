@@ -5,3 +5,5 @@ login_groups:
   - netusers
 
 ldapclient_enabled: true
+
+unstable_repo: false
