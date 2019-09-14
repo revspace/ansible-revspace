@@ -18,6 +18,7 @@ mediaserver.space.revspace.nl          # Squeeze server
 pov.space.revspace.nl
 ldap.space.revspace.nl                # New ldap server
 grafiekjes.space.revspace.nl
+icinga.space.revspace.nl              # Icinga monitoring
 
 [memberservers]
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/stable

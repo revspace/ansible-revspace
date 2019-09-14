@@ -4,6 +4,7 @@
   become: yes
   roles:
     - common
+    - dehydrated
     - unattended-upgrade
 
 - hosts: memberservers
@@ -15,4 +16,10 @@
   become: yes
   roles:
     - ldapserver
+
+- hosts: icinga.space.revspace.nl
+  become: yes
+  roles:
+    - dehydrated
+    - icinga
 

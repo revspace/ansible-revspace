@@ -1,0 +1,139 @@
+
+- name: Configure debconf settings
+  debconf:
+    name: "{{item.name}}"
+    question: "{{item.question}}"
+    value: "{{item.value}}"
+    vtype: "{{item.vtype}}"
+  with_items:
+    - { name: "icinga-common", question: "icinga/check_external_commands", value: "true", vtype: boolean }
+
+- name: Install required software
+  apt:
+    state: present
+    pkg:
+      - icinga
+      - apache2
+      - nsca-ng-server
+      - bc
+  register: icingaupdate
+
+- name: Configure debconf settings
+  debconf:
+    name: "{{item.name}}"
+    question: "{{item.question}}"
+    value: "{{item.value}}"
+    vtype: "{{item.vtype}}"
+  with_items:
+    - { name: "icinga-common", question: "icinga/check_external_commands", value: "true", vtype: boolean }
+    - { name: "icinga-cgi",    question: "icinga/adminpassword", value: "{{icinga_adminpassword}}", vtype: password }
+    - { name: "icinga-cgi",    question: "icinga/adminpassword-repeat", value: "{{icinga_adminpassword}}", vtype: password }
+  when: icingaupdate is changed
+
+- name: Create directories
+  file:
+    state: directory
+    path: "{{item}}"
+  with_items:
+    - /etc/icinga/objects/services
+
+- name: Enable icinga configuration
+  file:
+    state: link
+    src: /etc/apache2/conf-available/icinga.conf
+    dest: /etc/apache2/conf-enabled/icinga.conf
+  notify: reload apache2
+
+- name: Enable apache modules
+  apache2_module:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - cgid
+  notify: reload apache2
+
+- name: Template various icinga configuration files
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: "{{item.owner|default('root')}}"
+    group: "{{item.group|default('root')}}"
+    mode: "{{item.mode|default(0644)}}"
+  with_items:
+    - { src: "icinga.cfg", dest: "/etc/icinga/icinga.cfg" }
+    - { src: "cgi.cfg", dest: "/etc/icinga/cgi.cfg" }
+    - { src: "resource.cfg", dest: "/etc/icinga/resource.cfg" }
+    - { src: "apache-defaultsite.conf", dest: "/etc/apache2/sites-available/000-default.conf" }
+    - { src: "apache-site.conf", dest: "/etc/apache2/sites-available/{{inventory_hostname}}.conf" }
+    - { src: "commands.cfg", dest: "/etc/icinga/commands.cfg" }
+    - { src: "contacts_icinga.cfg", dest: "/etc/icinga/objects/contacts_icinga.cfg" }
+    - { src: "nsca-ng.cfg", dest: "/etc/nsca-ng/nsca-ng.cfg" }
+    - { src: "monitor.cfg", dest: "/etc/icinga/objects/services/monitor.cfg" }
+  notify: reload icinga
+
+#  - name: copy new version of check_http, one that sends output with check
+#  copy:
+#    src: "{{ role_path }}/templates/checks/check_http_v2.20.80"
+#    dest: /usr/lib/nagios/plugins/check_http_v2.20.80
+#    mode: 755
+#  tags:
+#    - update_service
+
+- name: check if config has errors
+  command: icinga -v /etc/icinga/icinga.cfg
+  register: icinga_conf_check
+  tags:
+    - icinga_config_check
+  check_mode: no
+
+- name: make flag
+  set_fact:
+    icinga_config_ok: true
+  when: icinga_conf_check is defined and icinga_conf_check.stdout is search("Things look okay")
+  tags:
+    - icinga_config_check
+  ignore_errors: yes
+
+- name: Enable apache sites
+  file:
+    state: link
+    src: "/etc/apache2/sites-available/{{item}}.conf"
+    dest: "/etc/apache2/sites-enabled/{{item}}.conf"
+  with_items:
+    - "{{inventory_hostname}}"
+    - "000-default"
+  notify: reload apache2
+
+- name: Create various directories for config files
+  file:
+    state: directory
+    path: "{{item.name}}"
+    owner: "{{item.owner|default('root')}}"
+    group: "{{item.group|default('root')}}"
+    mode: "{{item.mode|default(0755)}}"
+  with_items:
+    - { name: '/etc/icinga/objects/hosts' }
+    - { name: '/etc/icinga/objects/services' }
+    - { name: '/var/www/secure' }
+    - { name: '/var/www/insecure' }
+    - { name: '/etc/nsca-ng/nsca-ng.d' }
+    - { name: '/var/lib/icinga/rw/', owner: 'nagios', group: 'www-data', mode: '2750' }
+  notify: reload icinga
+
+- name: Create dummy index.html page
+  file:
+    state: touch
+    owner: root
+    group: root
+    mode: 0644
+    path: "{{item}}"
+  with_items:
+    - /var/www/secure/index.html
+    - /var/www/insecure/index.html
+
+- name: Enable / Start icinga
+  service:
+    name: icinga
+    state: started
+    enabled: true
+
