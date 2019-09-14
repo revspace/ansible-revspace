@@ -3,14 +3,16 @@
 ---
 
   - name: Install standard software
-    apt: name={{ item }} state=present
-    with_items:
+    apt:
+      state: present
+      pkg:
       - less
       - bash
       - rsync
       - sudo-ldap
       - unattended-upgrades
       - apt-listchanges
+      - aptitude
       - debconf-utils
       - python
       - python-simplejson
@@ -51,7 +53,6 @@
   - name: Place pubkeys for root account
     lineinfile: create=yes state=present dest='/root/.ssh/authorized_keys' line="{{ item }}"  insertafter=EOF
     with_items:
-      - "ssh-dss AAAAB3NzaC1kc3MAAACBAMvKk5Gyr+6jk0SmKNL0gPIJF8Uj67RO6zBTOCdVlv2fZQKgEDdrv1F1TGAvBfEYdYZhJldtWAjuAZew03YAMoT5VKkD1jIdnh26yZJ4XzWQkdP/KsunMzOW4kfKGChquIQOF2Fa5961XnhiVhGyOoVXStpZONLJyBemtO8pnHCnAAAAFQCynmTzBpkf7vMC4VYjlyBckghlPwAAAIEAuS2hRo8GFWLEPnsEKj+fFbSFABJWVqO2TL9S+udkBXaxMfVSvtICgsrawyLRW/feE3DDIZYOAWa52IXHZBM0rpHYcAaynPtlIg46flsgyS+0gtuFaPIq2FsorPctm2z/B3nNC8QBmhowChjT3KICZ/s00L//1qkzRLGxvxEM23gAAACBAJzAUMC7F0uYJLkhp7RErjdd9f9unKolSoR42uemiZfilW1aPLnbOCVTJ10bbOyOa053MAMRzog64+jJj0O+4NM5Gb2lxteODZvNlGB/mAgHP5r8taSLnId2rIfLQmDAHgVt4MyXN2n0U/HEqpFh3cm0nQSE4CQa+axuinuKEdpv Mark Janssen (DSA@Laptop)"
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPw+QHtTKkcEOU58fdJ9/jdwlr0x7cQf56eWUWsqJtsru3CgtkVF3BKX/epLYIDxt2oodwaPXb/vgCN9DjpaH0tfncyQssFkhlAKUnI7Deh3Jxfj3+7LjRj5uELvZEZPph2u5SqC7YrlEnrk+D2JmW4apeTmKc2SCSuEvsPaYVoU9hP5uG6x6Dm4EGVasyQPifxycXEd/W0xTeghlWDXcfBsX6OIfM9be4Mr7t+WscH1yb1WRkw9L+AgiqYMJmQ8BAeiFTYZiCPPGjkexhyy+W9NhJqwTLodkpA+dupXLDwnVJqqu9VnevGYnbCHjV2BZDRNuP2kpYWGOuhcqtYoAP winscap@winscap"
       - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAr63ehb4Gpzv2cPZctjpgNgCE32vY9glCVznCOytj0FxtolxkJhbJhyCekk8t/0WGSB22xW3eYyIlk/zgqvxhI35B7hYnjEMv4GzPdJXG79X6nQteaywsMKqNYI0Et0XrqCmAQZiJJT0K3Sbjpn4Wuhi6kcPMYjZn6+kUW6WHLVXs6/+ECkbSZbU1+uaEE3G1HV1OPBINo1ZxeM+6hXHHnaHyLsJ3a62cfHQHw6Gq72ubqIXKuG6PNfQDyi/xtDaWwU98qQlPW4McnM89UA40CMb8oHssQbrFKONAyBhDS+agK7xizevQ1nTsTvitpI2asSAo7w+Ke70WGJJ+pPvbFQ== juerd@lanova"
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfAK3J72qF952F0HfjrQu2Qtc2mw4g8LMOZrbK1+siOZF/VhFN1UNMscnHuZICHT4xo89i7+/TuXv1tQ6fblwkaih3G1+kRJ0yXjhJ/jGo4RDnEydQ6HdmuOyWRb5N4hrPhIAHHN8lBUQxrE8Z45eXBQrWluWEhQHKzsfhu9K0VPxE5nBjkWpCE2K/wc7UgWx+gGjISnO3XDdsvSoqemiVWA/GeqP59geQxfImiiTsN6NPKPcEHsZvVVJbS1+ZNjcwtGM+PZJ7JdYGotfHnQqs8sZtycQ+pSbnoQAGKqRWGNRBtaveOW2wid7G/u3tLZm2DIkRJbsexcGID3M4Kk/t kapriol@kamikaze"
