@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+# Global entries
+{% for entry in global_authkeys_root %}
+{{ entry }}
+{% endfor %}
+# Host specific entries
+{% for entry in host_authkeys_root %}
+{{ entry }}
+{% endfor %}
+# end Host specific entries

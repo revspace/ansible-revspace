@@ -1,0 +1,37 @@
+# {{ ansible_managed }}
+
+Port {{sshd_port|default('22')}}
+
+PermitRootLogin {{sshd_permitroot|default('without-password')}}
+ChallengeResponseAuthentication {{sshd_challengeresponseauthentication|default('no')}}
+UsePAM {{sshd_usepam|default('yes')}}
+X11Forwarding {{sshd_x11forwarding|default('yes')}}
+PrintMotd {{sshd_printmotd|default('no')}}
+X11Forwarding {{sshd_x11forwarding|default('yes')}}
+PasswordAuthentication {{sshd_passwordauthentication|default('no')}}
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+{% if sshd_sftp_internal|default(true) %}
+# Configure SFTP Subsystem (internal sftp)
+Subsystem   sftp    {{sftp_server_path}}
+{% endif %}
+
+AuthorizedKeysFile .ssh/authorized_keys
+{% if sshd_pubkey_ldap|bool and ldapclient_enabled|bool %}
+# SSH Keys in LDAP helper-script
+AuthorizedKeysCommand /usr/sbin/ssh-getkey-ldap
+AuthorizedKeysCommandUser nobody
+{% endif %}
+
+# Group specific configuration
+{% for line in sshd_group_config %}
+{{ line }}
+{% endfor %}
+
+# Host specific configuration
+{% for line in sshd_host_config %}
+{{ line }}
+{% endfor %}
+
