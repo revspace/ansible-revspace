@@ -50,6 +50,7 @@
     - olcSSL
   when: olcedits|changed
   ignore_errors: true
+  changed_when: false
 
 - name: Enable SSL listener
   lineinfile: dest=/etc/default/slapd line='SLAPD_SERVICES="ldap:/// ldaps:/// ldapi:///"' regexp="^SLAPD_SERVICES"
