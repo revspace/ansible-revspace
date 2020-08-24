@@ -3,23 +3,23 @@
 - hosts: revspace
   become: yes
   roles:
-    - common
-    - dehydrated
-    - unattended-upgrade
+    - { role: "common", tags: [ "common" ] }
+    - { role: "dehydrated", tags: [ "dehydrated" ] }
+    - { role: "unattended-upgrade", tags: [ "unattended-upgrade" ] }
 
 - hosts: memberservers
   become: yes
   roles:
-    - ldapclient
+    - { role: "ldapclient", tags: [ "ldapclient" ] }
 
 - hosts: ldap.space.revspace.nl
   become: yes
   roles:
-    - ldapserver
+    - { role: "ldapserver", tags: [ "ldapserver" ] }
 
 - hosts: icinga.space.revspace.nl
   become: yes
   roles:
-    - dehydrated
-    - icinga
+    - { role: "dehydrated", tags: [ "dehydrated" ] }
+    - { role: "icinga", tags: [ "icinga" ] }
 
