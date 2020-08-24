@@ -121,12 +121,12 @@
   notify: reload icinga
 
 - name: Create dummy index.html page
-  file:
-    state: touch
+  copy:
     owner: root
     group: root
     mode: 0644
-    path: "{{item}}"
+    content: ""
+    dest: "{{item}}"
   with_items:
     - /var/www/secure/index.html
     - /var/www/insecure/index.html
