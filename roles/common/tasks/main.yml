@@ -89,6 +89,22 @@
     - { src: "aliases.j2", dest: "/etc/aliases", notify: "newaliases" }
     - { src: "mailname.j2", dest: "/etc/mailname", notify: "reload postfix" }
     - { src: "ntp.conf.j2", dest: "/etc/ntp.conf", mode: "0644", notify: "reload ntpd" }
+  tags:
+    - templates
+
+
+- name: Template various files
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: "{{item.owner|default('root')}}"
+    group: "{{item.group|default('root')}}"
+    mode: "{{item.mode|default('0600')}}"
+  notify: "{{item.handler|default('dummy_handler')}}"
+  with_items:
+    - { src: "authorized_keys-root.j2", dest: "/root/.ssh/authorized_keys", mode: "0600" }
+  tags:
+    - authkeys
 
 - name: Configure 'unstable' repository for debian
   apt_repository:
