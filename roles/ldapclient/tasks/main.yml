@@ -34,6 +34,8 @@
       - ldapclient
       - logingroups
     when: logingroups is defined
+    notify:
+      - reload nslcd
 
   - name: Copy CA certificate
     copy: src={{item}} dest=/etc/ldap/{{item}} owner=root group=root mode=0644
@@ -44,11 +46,15 @@
     template: src={{item}}.j2 dest=/etc/ldap/{{item}} owner=root group=root mode=0644
     with_items:
       - ldap.conf
+    notify:
+      - reload nslcd
 
   - name: Template nslcd.conf
     template: src={{item}}.j2 dest=/etc/{{item}} owner=root group=root mode=0644
     with_items:
       - nslcd.conf
+    notify:
+      - reload nslcd
 
   - name: Update /etc/nsswitch.conf
     lineinfile: "dest=/etc/nsswitch.conf line='{{item}}:		compat ldap' regexp='^{{item}}'"
@@ -65,10 +71,4 @@
     tags:
       - ldapclient
       - nscd
-
-  - name: Restart nslcd service
-    service: name=nslcd state=restarted enabled=true
-    tags:
-      - ldapclient
-      - nslcd
 
