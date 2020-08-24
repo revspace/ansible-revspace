@@ -9,10 +9,11 @@
      - { q: 'backend', v: "MDB", t: 'select' }
 
 - name: Install required software
-  apt: name={{item}} state=installed
-  with_items:
-    - slapd
-    - ldap-utils
+  apt:
+    pkg:
+      - slapd
+      - ldap-utils
+    state: latest
 
 - name: Set ldap OLC password
   lineinfile: "dest='/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif' line='olcRootPW: {{slapd_config_pass}}' insertafter='^modifyTimeStamp:' regexp='^olcRootPW'"

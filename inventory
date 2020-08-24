@@ -5,9 +5,9 @@ memberservers
 
 [physical]
 gateway.space.revspace.nl
-squeezeslave-klusbunker # Softsqueeze klusbunker
+#DOWN ? squeezeslave-klusbunker # Softsqueeze klusbunker
 vm1.space.revspace.nl
-vm2.space.revspace.nl
+#vm2.space.revspace.nl
 
 [vm1vms]
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable

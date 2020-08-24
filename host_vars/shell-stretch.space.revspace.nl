@@ -7,3 +7,5 @@ login_groups:
 ldapclient_enabled: true
 
 unstable_repo: false
+
+sshd_passwordauthentication: "yes"

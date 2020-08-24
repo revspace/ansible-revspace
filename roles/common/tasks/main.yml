@@ -25,6 +25,7 @@
     - debconf-utils
     - python
     - python-simplejson
+    - python-apt
     - dstat
     - pv
     - tcpdump
