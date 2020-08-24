@@ -5,6 +5,8 @@
   with_items:
      - { q: 'domain', v: "{{slapd_domain}}", t: 'string' }
      - { q: 'backend', v: "MDB", t: 'select' }
+  notify:
+    - Restart slapd
 
 - name: Configure debconf items for slapd (passwords)
   debconf: name=slapd question="slapd/{{item.q}}" value="{{item.v}}" vtype="{{item.t}}"
@@ -23,6 +25,8 @@
 
 - name: Set ldap OLC password
   lineinfile: "dest='/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif' line='olcRootPW: {{slapd_config_pass}}' insertafter='^modifyTimeStamp:' regexp='^olcRootPW'"
+  notify:
+    - Restart slapd
 
 - name: Copy revspace schema and olcConfig
   copy: src={{item.src}} dest=/etc/ldap/{{item.dst}} owner=openldap group=openldap mode=0644
@@ -31,6 +35,8 @@
     - { src: "sudoers.schema", dst: "schema/sudoers.schema" }
     - { src: "cn={4}revspace.ldif", dst: "slapd.d/cn=config/cn=schema/cn={4}revspace.ldif" }
     - { src: "cn={5}sudoers.ldif", dst: "slapd.d/cn=config/cn=schema/cn={5}sudoers.ldif" }
+  notify:
+    - Restart slapd
 
 #- name: Create directory for certificates
 #  file: path={{slapd_certpath}} state=directory owner=openldap group=openldap mode=0700
@@ -48,6 +54,8 @@
     - olcAccess
     - olcSSL
   register: olcedits
+  notify:
+    - Restart slapd
 
 - name: Update olcConfig
   command: ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/ldap/{{item}}.ldif
@@ -57,9 +65,10 @@
   when: olcedits|changed
   ignore_errors: true
   changed_when: false
+  notify:
+    - Restart slapd
 
 - name: Enable SSL listener
   lineinfile: dest=/etc/default/slapd line='SLAPD_SERVICES="ldap:/// ldaps:/// ldapi:///"' regexp="^SLAPD_SERVICES"
-
-- name: Restart slapd
-  service: name=slapd state=restarted
+  notify:
+    - Restart slapd
