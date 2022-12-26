@@ -1,5 +1,7 @@
 ---
 
+sshd_pubkey_ldap: true
+
 host_authkeys_root:
   - "# Unknown: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXlnbs+CGq2KoyONiVyizNB0nsKb/Guc/W0JsYcMaVnQ25myd2sQDjhEp69pS0MJU36ACMhowSRo40xi2qw+uCsFpN85Yr0nqoIjsPp1n5n9tbWVAJcgkfebB8t5cDmuj1MNHSMFIUTefi/wMd6ZBhlgWEisIMwUxqpVybPnKYJ9ykbK3OK1pfQVmmSpp+XWMSkxsX75R/COq7jZwT3pyKU4XQ+rEsapGQ05kOMjiTw0mNMJn1oqc716lQB9asEViBdrRdqBN6aL1WuCYgxBn1Nek9TWXkCmmSvoXh421lvevA5zz96tUTd9ku0HXGqbWl/6r5mUytK+0SU8M10NGf /home/peter/.ssh/id_rsa"
   - "# Benadski"

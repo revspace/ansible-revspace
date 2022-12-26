@@ -63,6 +63,13 @@
       - group
       - shadow
 
+  - name: Template nslcd.conf
+    template: src=ssh-getkey-ldap.j2 dest=/usr/sbin/ssh-getkey-ldap owner=root group=root mode=0644
+    with_items:
+      - ssh-getkey-ldap
+    tags:
+      - ssh-getkey-ldap
+
   - name: Update /etc/nsswitch.conf
     lineinfile: "dest=/etc/nsswitch.conf line='sudoers:		ldap' regexp='^sudoers' insertbefore=EOF"
 

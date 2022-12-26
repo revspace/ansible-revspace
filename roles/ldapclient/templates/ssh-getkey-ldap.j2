@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+# {{ansible_managed}}
+
+from ldap3 import Server, Connection, NONE, SUBTREE
+import sys
+
+try:
+    uid=str(sys.argv[1])
+except:
+    print("No user specified")
+    exit(1)
+
+if ( uid == "root" ):
+    exit(0)
+
+s = Server('{{ ldap_uri }}', get_info=NONE)
+c = Connection(s)
+if not c.bind():
+    print('error in bind', c.result)
+    exit(1)
+
+c.search(search_base = 'ou=People,{{ ldap_base }}',
+        search_filter = '(uid=' + uid + ')',
+        search_scope = SUBTREE,
+        attributes = ['sshPublicKey'],
+        time_limit = 2,
+        paged_size = 5)
+
+keys = c.response[0]['raw_attributes']['sshPublicKey']
+
+for x in range(len(keys)):
+    print( keys[x].decode('ascii') )
+
