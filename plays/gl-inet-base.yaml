@@ -23,13 +23,15 @@
     command: /bin/opkg update
 
   - name: Install required base packages
-    opkg: name={{item}} state=installed
+    opkg:
+      name: "{{ item }}"
+      state: installed
     with_items:
-      - shadow-groupadd
-      - shadow-useradd
-      - shadow-groupmod
-      - shadow-usermod
-      - net-tools-hostname
+    - shadow-groupadd
+    - shadow-useradd
+    - shadow-groupmod
+    - shadow-usermod
+    - net-tools-hostname
 
   - name: Create /home
     file: dest=/home state=directory owner=root group=root mode=0755
@@ -38,9 +40,12 @@
     authorized_key: user=root key="{{item}}" path=/etc/dropbear/authorized_keys
     with_items: rootpubkeys
 
-
   - name: Set hostname (permanent)
-    lineinfile: 'dest=/etc/config/system line="	option hostname {{inventory_hostname_short}}" regexp="option hostname" insertafter="config system"'
+    lineinfile:
+      dest: "/etc/config/system"
+      line: "	option hostname {{ inventory_hostname_short }}"
+      regexp: "option hostname"
+      insertafter: "config system"
     notify: Set hostname
 
   handlers:

@@ -7,8 +7,8 @@
   gather_facts: yes
   vars:
   become: no
-  user: root 
-  roles: 
+  user: root
+  roles:
     - dehydrated
     - ldapserver
     - radiusserver
