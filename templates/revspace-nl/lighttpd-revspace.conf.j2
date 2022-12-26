@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+
+server.tag = "lighttpd"
+server.modules += ("mod_extforward")
+server.modules += ("mod_setenv" )
+server.modules += ("mod_rewrite")
+
+extforward.forwarder = ( "10.42.42.1" => "trust" )
+
+# HSTS
+setenv.add-response-header  = ( "Strict-Transport-Security" => "max-age=31536000")
+
+server.bind = "127.0.0.1"
+server.port = 81
+server.use-ipv6 = "disable"
+
+url.rewrite-if-not-file = ( 
+    "^/(mw-)?config/?" => "$0",
+    "^/old/?" => "$0",
+    "^/([^?]*)(?:\?(.*))?" => "/index.php?title=$1&$2",
+    "^/([^?]*)" => "/index.php?title=$1" 
+)
+

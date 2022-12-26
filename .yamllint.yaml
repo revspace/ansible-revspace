@@ -1,0 +1,17 @@
+---
+
+extends: relaxed
+
+rules:
+  # 80 chars should be enough, but don't fail if a line is longer
+  line-length:
+    max: 200
+    level: warning
+  empty-lines:
+    max: 2
+    max-start: 1
+    max-end: 1
+  colons:
+    max-spaces-after: -1
+  commas:
+    max-spaces-after: -1

@@ -1,0 +1,11 @@
+#warn_list:  # or 'skip_list' to silence them completely
+skip_list:
+  - '204'   # Lines should be no longer than 160 chars
+  - experimental
+  - fqcn-builtins
+  - fqcn
+  - name
+  - template-instead-of-copy
+warn_list:
+  - no-handler
+  - ignore-errors
