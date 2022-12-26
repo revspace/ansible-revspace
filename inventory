@@ -13,6 +13,8 @@ vm1.space.revspace.nl
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
 shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
 shell-sid.space.revspace.nl           # Member shell doos met debian sid/unstable
+shell-buster.space.revspace.nl        # Member shell doos met debian buster
+shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye
 flux.space.revspace.nl                # Radius server
 mediaserver.space.revspace.nl          # Squeeze server
 pov.space.revspace.nl
@@ -23,8 +25,11 @@ nextcloud.space.revspace.nl           # Nextcloud
 #redir.space.revspace.nl               # ???
 
 [memberservers]
-shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/stable
+shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
+shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
 shell-sid.space.revspace.nl           # Member shell doos met debian sid/unstable
+shell-buster.space.revspace.nl        # Member shell doos met debian buster
+shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye
 mediaserver.space.revspace.nl
 
 [doorduino]

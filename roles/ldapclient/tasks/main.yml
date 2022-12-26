@@ -8,6 +8,7 @@
       state: present
       pkg:
       - libpam-ldapd
+      - python3-ldap3
     when: ansible_os_family == 'Debian'
     tags:
       - ldapclient
