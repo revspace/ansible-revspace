@@ -1,5 +1,4 @@
 ---
 
 host_authkeys_root:
-  - crashjuh
-  - flok
+  - peetz0r

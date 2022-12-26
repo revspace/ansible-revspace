@@ -13,21 +13,11 @@ dns_servers:
 root_alias: "board@revspace.nl"
 
 global_authkeys_root:
-  - "# FooBar"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICyKprIcR81+RFSBxU3iyW4vd0ctr0q1Pqifzxbro+0C mark@x240-ed25519"
-  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUIAkaRsvb6cD1XIGF80JpMH1mYE9XhCgptOkt9AfloZQlO7Ds5XeCwJk5/TsoidTcb/0yFUov8SMwaIVtrFfkNUqqeAsfm3luJ4JwOXeCwrXD6W7c5Wqg/FGNH0eZr0kEnxpNS10L72+oNBQgnlSNjqWS29lEmXApKQ3IKy6aP9cMwEh25fsH/2G7mHsZX2UMPK0tZPC6MPxY5P9PWLIulUpsX96c6OcAvGYIvsCnecsVsTdhK36w4Z/t7XoLFz5X6k3eXT7gG4SMGuBixjroTUhumWzgJJ6T1Nn/eESe7Im8krlzO/0hG/F8uBy3s04TAJuXFmygvtC4YLyq91U5 FooBar"
-  - "# Juerd"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMiW6/qOrd4+M7CSf9JZt3GycZ/aLhzyPQwzpgXEMU2d juerd@cxien"
-  - "# Winscap"
-  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCltgBgACdNSZe4ldpncw6TbU8HwNjaN80aWX9L8B2sMwlN70Y08deZNRv9I+GyfJfcpiuxnZ0s2cVptiuQObfsFjj7qtUZkWS1yMkkmwgczmlxyZsFd7N6GcRYhqWRY/15gV58vupEy0zdbTrQOw3duFwfIvZv9XjVsRo1DB+zKCOT1YxaMrJ92wfK4HWDlrjn7XnS+We7RIvk+BMWDU66CJOlXDsojdcIRx/Y1XEf4rhII+k6Wi7UinOizQ+vacrAGx2nJa5i34zPHnAU3BssKvexs1hC4C/5aAi+LdgLjRSBetsVpMd2QWIy7T1zVF7tZOggd06q2XmmKzjSiWZdQPYcP9OF2PHgPYyvIasBP4So8WV20LlBOM1XEDwIKmF6QPbCCh/4qWN0qRf48EFHDwtcdYHrT5gX99JSDZf/gq9J13apLMBNxTbmlLJUTby955Wmt6h0LmY0wlG3V+heMZx3qc1cwDxeGs0ItZA/szSqpTguWPPoroTtpyZfgDiwGZMInxwkmVCsSeGrW5188JW1YwgZsbEp4lolrkZZwvHGCIrhqdQjPtMmNlpAMqLiW43eaNHj+3SoHjUDk3Ny2Iistxk+ZXRoY1z8LjyaFsHfB27FdThmg1fL+ALqXwrAKe2P7TaFPLuqZuuheoDAjmaFzjzIVrZqyQPilJ2KwQ== winscap@Latitude"
-  - "# Maxell"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIL3GZs2hxd3CrUBAvKM7v087XvFnasKv6fSLIi4vd1t maxell@voorsprong"
-  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfAK3J72qF952F0HfjrQu2Qtc2mw4g8LMOZrbK1+siOZF/VhFN1UNMscnHuZICHT4xo89i7+/TuXv1tQ6fblwkaih3G1+kRJ0yXjhJ/jGo4RDnEydQ6HdmuOyWRb5N4hrPhIAHHN8lBUQxrE8Z45eXBQrWluWEhQHKzsfhu9K0VPxE5nBjkWpCE2K/wc7UgWx+gGjISnO3XDdsvSoqemiVWA/GeqP59geQxfImiiTsN6NPKPcEHsZvVVJbS1+ZNjcwtGM+PZJ7JdYGotfHnQqs8sZtycQ+pSbnoQAGKqRWGNRBtaveOW2wid7G/u3tLZm2DIkRJbsexcGID3M4Kk/t kapriol@kamikaze"
-  - "# F0x"
-  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJIFA/PpRar4hQ0kPAEXBjab0+FBgsE1CREFZolQbAL5BlPpzsl2FwQbiHRx/rUHnRLmlaiiLdI3i1SdpsOrVb4n5Z3DniYEFRrCW7lfetYv60qArFgW2rV5U+VLDnFJcDJZHqCzoMy3D+iYNX1qNPvqa4K1nkvk/oXh5tJrdeUEYfv+GpC+usjphG4z+KQgXof6VJOxtL2Gm6lJw7eX8nsYnnrPtjIkCN58avmAHDgtltmZQuKwp1tr+nIC+sD89DBpfuQjOQU9RQWUoo1zZwnKDc4HJmatevmpBjNlhVCTuB/ZBFItuKQ+gGZUEDlEZGAqzmR49mLvlkTaT7IYF1 f0x@elephantus"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+dwsWe1/ujR0N4IxPv7mfyiuKWURc6QwYNJ+VV8KA6 f0x@behemoth"
-  - "# Sebastius"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHhMS+qMpmYkci9eCU3rs+KbAOkt6xU63FREOUGKm1QY sebastius@macbookpro2015"
-  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICFrOqqJ8IAT66XihfVIOcuO4hAbeRII5akl+oLbKbZY sebastius@mbpro2020"
+  - foobar
+  - juerd
+  - winscap
+  - maxell
+  - sebastius
+  - fox
 
 dehydrated_contactemail: "board@revspace.nl"
