@@ -29,9 +29,9 @@
     dest: /etc/login.group.allowed
     line: "board"
     regexp: "^board$"
-    owner: root
-    group: root
-    mode: 0755
+    owner: "root"
+    group: "root"
+    mode: "0755"
     create: true
   with_items:
     - "{{ login_groups | default('board') }}"
@@ -44,12 +44,12 @@
 - name: Limit access to listed groups
   lineinfile:
     dest: /etc/pam.d/common-auth
-    line: "auth required pam_listfile.so onerr=fail item=group sense=allow file=/etc/login.group.allowed"
-    regexp: "pam_listfile.*login\.group\.allowed"
+    line: 'auth required pam_listfile.so onerr=fail item=group sense=allow file=/etc/login.group.allowed'
     insertbefore: EOF
-    owner: root
-    group: root
-    mode: 0644
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    regexp: "pam_listfile.*login.group.allowed"
   tags:
     - ldapclient
     - logingroups
@@ -62,17 +62,17 @@
   copy:
     src: "{{ ldap_cafile }}"
     dest: "/etc/ldap/{{ ldap_cafile }}"
-    owner: root
-    group: root
-    mode: 0644
+    owner: "root"
+    group: "root"
+    mode: "0644"
 
 - name: Template ldap.conf
   template:
-    src: {{item}}.j2
-    dest: /etc/ldap/{{item}}
-    owner: root
-    group: root
-    mode: 0644
+    src: "{{ item }}.j2"
+    dest: "/etc/ldap/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   with_items:
     - ldap.conf
   notify:
@@ -80,11 +80,11 @@
 
 - name: Template nslcd.conf
   template:
-    src: {{item}}.j2
-    dest: /etc/{{item}}
-    owner: root
-    group: root
-    mode: 0644
+    src: "{{ item }}.j2"
+    dest: "/etc/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
   with_items:
     - nslcd.conf
   notify:
@@ -93,8 +93,8 @@
 - name: Update /etc/nsswitch.conf
   lineinfile:
     dest: /etc/nsswitch.conf
-    line: '{{item}}:		compat ldap'
-    regexp: '^{{item}}'
+    line: "{{ item }}: compat ldap"
+    regexp: "^{{ item }}"
   with_items:
     - passwd
     - group
@@ -104,9 +104,9 @@
   template:
     src: ssh-getkey-ldap.j2
     dest: /usr/sbin/ssh-getkey-ldap
-    owner: root
-    group: root
-    mode: 0755
+    owner: "root"
+    group: "root"
+    mode: "0755"
   with_items:
     - ssh-getkey-ldap
   tags:
@@ -115,7 +115,7 @@
 - name: Update /etc/nsswitch.conf
   lineinfile:
     dest: /etc/nsswitch.conf
-    line: 'sudoers:		ldap'
+    line: 'sudoers: ldap'
     regexp: '^sudoers'
     insertbefore: EOF"
 

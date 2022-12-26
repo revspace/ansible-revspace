@@ -1,8 +1,7 @@
 ---
 
-  - name: reload nslcd
-    service: name=nslcd state=restarted enabled=true
-    tags:
-      - ldapclient
-      - nslcd
-
+- name: reload nslcd
+  service: name=nslcd state=restarted enabled=true
+  tags:
+    - ldapclient
+    - nslcd

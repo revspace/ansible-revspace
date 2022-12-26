@@ -4,10 +4,10 @@
 
 - name: Set package holds
   dpkg_selections:
-    name: "{{item}}"
+    name: "{{ item }}"
     selection: hold
   with_items:
-    - "{{held_packages}}"
+    - "{{ held_packages }}"
   tags:
     - dpkg
 
@@ -15,29 +15,29 @@
   apt:
     state: present
     pkg:
-    - less
-    - bash
-    - rsync
-    - sudo-ldap
-    - unattended-upgrades
-    - apt-listchanges
-    - aptitude
-    - debconf-utils
-    - python
-    - python-simplejson
-    - python-apt
-    - dstat
-    - pv
-    - tcpdump
-    - nmap
-    - screen
-    - ncdu
-    - zsh
-    - htop
-    - vim
-    - net-tools
-    - postfix
-    - ack-grep
+      - less
+      - bash
+      - rsync
+      - sudo-ldap
+      - unattended-upgrades
+      - apt-listchanges
+      - aptitude
+      - debconf-utils
+      - python
+      - python-simplejson
+      - python-apt
+      - dstat
+      - pv
+      - tcpdump
+      - nmap
+      - screen
+      - ncdu
+      - zsh
+      - htop
+      - vim
+      - net-tools
+      - postfix
+      - ack-grep
   when: ansible_os_family == 'Debian'
   tags:
     - debian
@@ -45,7 +45,11 @@
     - common
 
 - name: Enable auto-installing security updates on Debian
-  debconf: name='unattended-upgrades' question='enable_auto_updates' value='true' vtype='select'
+  debconf:
+    name: 'unattended-upgrades'
+    question: 'enable_auto_updates'
+    value: 'true'
+    vtype: 'select'
   tags:
     - debian
     - common
@@ -53,7 +57,12 @@
     - unattended
 
 - name: Set directory permissions
-  file: state=directory owner=root group=root mode=0700 path={{item}}
+  file:
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0700"
+    path: "{{ item }}"
   with_items:
     - /root
     - /root/.ssh
@@ -63,19 +72,21 @@
     - debian
 
 - name: Set vim as default editor
-  alternatives: name=editor path=/usr/bin/vim.basic
+  alternatives:
+    name: editor
+    path: /usr/bin/vim.basic
   tags:
     - editor
     - debian
 
 - name: Template various files
   template:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    owner: "{{item.owner|default('root')}}"
-    group: "{{item.group|default('root')}}"
-    mode: "{{item.mode|default('0600')}}"
-  notify: "{{item.handler|default('dummy_handler')}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0600') }}"
+  notify: "{{ item.handler | default('dummy_handler') }}"
   with_items:
     - { src: "vimrc.local.j2", dest: "/etc/vim/vimrc.local", mode: "0644" }
     - { src: "authorized_keys-root.j2", dest: "/root/.ssh/authorized_keys", mode: "0600" }
@@ -93,15 +104,14 @@
   tags:
     - templates
 
-
 - name: Template various files
   template:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    owner: "{{item.owner|default('root')}}"
-    group: "{{item.group|default('root')}}"
-    mode: "{{item.mode|default('0600')}}"
-  notify: "{{item.handler|default('dummy_handler')}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0600') }}"
+  notify: "{{ item.handler | default('dummy_handler') }}"
   with_items:
     - { src: "authorized_keys-root.j2", dest: "/root/.ssh/authorized_keys", mode: "0600" }
   tags:
@@ -121,6 +131,6 @@
 
 - name: Create ssh-ed25519 key for root user
   openssh_keypair:
-    path: /root/.ssh/id_ed25519
-    type: ed25519
-    comment: "root@{{inventory_hostname}}"
+    path: "/root/.ssh/id_ed25519"
+    type: "ed25519"
+    comment: "root@{{ inventory_hostname }}"

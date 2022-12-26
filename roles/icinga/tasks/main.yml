@@ -1,10 +1,10 @@
 
 - name: Configure debconf settings
   debconf:
-    name: "{{item.name}}"
-    question: "{{item.question}}"
-    value: "{{item.value}}"
-    vtype: "{{item.vtype}}"
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
   with_items:
     - { name: "icinga-common", question: "icinga/check_external_commands", value: "true", vtype: boolean }
 
@@ -19,21 +19,21 @@
   register: icingaupdate
 
 - name: Configure debconf settings
-  debconf:
-    name: "{{item.name}}"
-    question: "{{item.question}}"
-    value: "{{item.value}}"
-    vtype: "{{item.vtype}}"
+  debconf: # noqa no-handler
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
   with_items:
     - { name: "icinga-common", question: "icinga/check_external_commands", value: "true", vtype: boolean }
-    - { name: "icinga-cgi",    question: "icinga/adminpassword", value: "{{icinga_adminpassword}}", vtype: password }
-    - { name: "icinga-cgi",    question: "icinga/adminpassword-repeat", value: "{{icinga_adminpassword}}", vtype: password }
+    - { name: "icinga-cgi",    question: "icinga/adminpassword", value: "{{ icinga_adminpassword }}", vtype: password }
+    - { name: "icinga-cgi",    question: "icinga/adminpassword-repeat", value: "{{ icinga_adminpassword }}", vtype: password }
   when: icingaupdate is changed
 
 - name: Create directories
   file:
     state: directory
-    path: "{{item}}"
+    path: "{{ item }}"
   with_items:
     - /etc/icinga/objects/services
 
@@ -46,7 +46,7 @@
 
 - name: Enable apache modules
   apache2_module:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: present
   with_items:
     - cgid
@@ -54,17 +54,17 @@
 
 - name: Template various icinga configuration files
   template:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    owner: "{{item.owner|default('root')}}"
-    group: "{{item.group|default('root')}}"
-    mode: "{{item.mode|default(0644)}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
   with_items:
     - { src: "icinga.cfg", dest: "/etc/icinga/icinga.cfg" }
     - { src: "cgi.cfg", dest: "/etc/icinga/cgi.cfg" }
     - { src: "resource.cfg", dest: "/etc/icinga/resource.cfg" }
     - { src: "apache-defaultsite.conf", dest: "/etc/apache2/sites-available/000-default.conf" }
-    - { src: "apache-site.conf", dest: "/etc/apache2/sites-available/{{inventory_hostname}}.conf" }
+    - { src: "apache-site.conf", dest: "/etc/apache2/sites-available/{{ inventory_hostname }}.conf" }
     - { src: "commands.cfg", dest: "/etc/icinga/commands.cfg" }
     - { src: "contacts_icinga.cfg", dest: "/etc/icinga/objects/contacts_icinga.cfg" }
     - { src: "nsca-ng.cfg", dest: "/etc/nsca-ng/nsca-ng.cfg" }
@@ -98,20 +98,20 @@
 - name: Enable apache sites
   file:
     state: link
-    src: "/etc/apache2/sites-available/{{item}}.conf"
-    dest: "/etc/apache2/sites-enabled/{{item}}.conf"
+    src: "/etc/apache2/sites-available/{{ item }}.conf"
+    dest: "/etc/apache2/sites-enabled/{{ item }}.conf"
   with_items:
-    - "{{inventory_hostname}}"
+    - "{{ inventory_hostname }}"
     - "000-default"
   notify: reload apache2
 
 - name: Create various directories for config files
   file:
     state: directory
-    path: "{{item.name}}"
-    owner: "{{item.owner|default('root')}}"
-    group: "{{item.group|default('root')}}"
-    mode: "{{item.mode|default(0755)}}"
+    path: "{{ item.name }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0755') }}"
   with_items:
     - { name: '/etc/icinga/objects/hosts' }
     - { name: '/etc/icinga/objects/services' }
@@ -123,11 +123,11 @@
 
 - name: Create dummy index.html page
   copy:
-    owner: root
-    group: root
+    owner: "root"
+    group: "root"
     mode: 0644
     content: ""
-    dest: "{{item}}"
+    dest: "{{ item }}"
   with_items:
     - /var/www/secure/index.html
     - /var/www/insecure/index.html

@@ -1,18 +1,26 @@
 ---
 
 - name: Configure debconf items for slapd
-  debconf: name=slapd question="slapd/{{item.q}}" value="{{item.v}}" vtype="{{item.t}}"
+  debconf:
+    name: slapd
+    question: "slapd/{{ item.q }}"
+    value: "{{ item.v }}"
+    vtype: "{{ item.t }}"
   with_items:
-     - { q: 'domain', v: "{{slapd_domain}}", t: 'string' }
-     - { q: 'backend', v: "MDB", t: 'select' }
+    - { q: 'domain', v: "{{ slapd_domain }}", t: 'string' }
+    - { q: 'backend', v: "MDB", t: 'select' }
   notify:
     - Restart slapd
 
 - name: Configure debconf items for slapd (passwords)
-  debconf: name=slapd question="slapd/{{item.q}}" value="{{item.v}}" vtype="{{item.t}}"
+  debconf:
+    name: slapd
+    question: "slapd/{{ item.q }}"
+    value: "{{ item.v }}"
+    vtype: "{{ item.t }}"
   with_items:
-     - { q: 'password1', v: "{{slapd_admin_pass}}", t: 'password' }
-     - { q: 'password2', v: "{{slapd_admin_pass}}", t: 'password' }
+    - { q: 'password1', v: "{{ slapd_admin_pass }}", t: 'password' }
+    - { q: 'password2', v: "{{ slapd_admin_pass }}", t: 'password' }
   changed_when: false
   no_log: true
 
@@ -21,15 +29,24 @@
     pkg:
       - slapd
       - ldap-utils
-    state: latest
+    state: present
 
 - name: Set ldap OLC password
-  lineinfile: "dest='/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif' line='olcRootPW: {{slapd_config_pass}}' insertafter='^modifyTimeStamp:' regexp='^olcRootPW'"
+  lineinfile:
+    dest: "/etc/ldap/slapd.d/cn=config/olcDatabase={0}config.ldif"
+    line: "olcRootPW: {{ slapd_config_pass }}"
+    insertafter: "^modifyTimeStamp:"
+    regexp: "^olcRootPW"
   notify:
     - Restart slapd
 
 - name: Copy revspace schema and olcConfig
-  copy: src={{item.src}} dest=/etc/ldap/{{item.dst}} owner=openldap group=openldap mode=0644
+  copy:
+    src: "{{ item.src }}"
+    dest: "/etc/ldap/{{ item.dst }}"
+    owner: "openldap"
+    group: "openldap"
+    mode: "0644"
   with_items:
     - { src: "revspace.schema", dst: "schema/revspace.schema" }
     - { src: "sudoers.schema", dst: "schema/sudoers.schema" }
@@ -39,17 +56,22 @@
     - Restart slapd
 
 #- name: Create directory for certificates
-#  file: path={{slapd_certpath}} state=directory owner=openldap group=openldap mode=0700
+#  file: path={{ slapd_certpath }} state=directory owner=openldap group=openldap mode=0700
 #
 #- name: Copy TLS files
-#  copy: src=ssl/{{item}} dest={{slapd_certpath}}/{{item}} owner=openldap group=openldap mode=0400
+#  copy: src=ssl/{{ item }} dest={{ slapd_certpath }}/{{ item }} owner=openldap group=openldap mode=0400
 #  with_items:
 #    - cacert.pem
 #    - server-key.pem
 #    - server-cert.pem
 
 - name: Template olc edits
-  template: src={{item}}.j2 dest=/etc/ldap/{{item}}.ldif owner=openldap group=openldap mode=0600
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/ldap/{{ item }}.ldif"
+    owner: "openldap"
+    group: "openldap"
+    mode: "0600"
   with_items:
     - olcAccess
     - olcSSL
@@ -58,17 +80,20 @@
     - Restart slapd
 
 - name: Update olcConfig
-  command: ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/ldap/{{item}}.ldif
+  command: "ldapmodify -Y EXTERNAL -H ldapi:/// -f /etc/ldap/{{ item }}.ldif"
   with_items:
     - olcAccess
     - olcSSL
-  when: olcedits|changed
+  when: olcedits | changed
   ignore_errors: true
   changed_when: false
   notify:
     - Restart slapd
 
 - name: Enable SSL listener
-  lineinfile: dest=/etc/default/slapd line='SLAPD_SERVICES="ldap:/// ldaps:/// ldapi:///"' regexp="^SLAPD_SERVICES"
+  lineinfile:
+    dest: "/etc/default/slapd"
+    line: "SLAPD_SERVICES=\"ldap:/// ldaps:/// ldapi:///\""
+    regexp: "^SLAPD_SERVICES"
   notify:
     - Restart slapd

@@ -1,4 +1,5 @@
 ---
+
 galaxy_info:
   author: Mark Janssen
   description: Dehydrated letsencrypt role for ansible
@@ -7,7 +8,7 @@ galaxy_info:
   min_ansible_version: 2.1
   #
   # Below are all platforms currently available. Just uncomment
-  # the ones that apply to your role. If you don't see your 
+  # the ones that apply to your role. If you don't see your
   # platform on this list, let us know and we'll get it added!
   #
   platforms:
@@ -90,7 +91,7 @@ galaxy_info:
 #    - lenny
 #    - squeeze
     - wheezy
-  categories:
+  galaxy_tags:
   - development
   - system
 dependencies: []
