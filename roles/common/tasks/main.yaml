@@ -23,9 +23,8 @@
       - apt-listchanges
       - aptitude
       - debconf-utils
-      - python
-      - python-simplejson
-      - python-apt
+      - python3
+      - python3-apt
       - dstat
       - pv
       - tcpdump

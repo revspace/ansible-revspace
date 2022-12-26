@@ -5,16 +5,14 @@ memberservers
 
 [physical]
 gateway.space.revspace.nl
-#DOWN ? squeezeslave-klusbunker # Softsqueeze klusbunker
 vm1.space.revspace.nl
 #vm2.space.revspace.nl
 
 [vm1vms]
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
 shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
-shell-sid.space.revspace.nl           # Member shell doos met debian sid/unstable
-shell-buster.space.revspace.nl        # Member shell doos met debian buster
 shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye
+shell-sid.space.revspace.nl           # Member shell doos met debian sid
 flux.space.revspace.nl                # Radius server
 mediaserver.space.revspace.nl          # Squeeze server
 pov.space.revspace.nl
@@ -22,14 +20,14 @@ ldap.space.revspace.nl                # New ldap server
 grafiekjes.space.revspace.nl
 icinga.space.revspace.nl              # Icinga monitoring
 nextcloud.space.revspace.nl           # Nextcloud
-#redir.space.revspace.nl               # ???
+redir.space.revspace.nl               # redir 
+asterisk.space.revspace.nl            # asterisk voip meuk
 
 [memberservers]
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
 shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
-shell-sid.space.revspace.nl           # Member shell doos met debian sid/unstable
-shell-buster.space.revspace.nl        # Member shell doos met debian buster
 shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye
+shell-sid.space.revspace.nl           # Member shell doos met debian sid
 mediaserver.space.revspace.nl
 
 [doorduino]
