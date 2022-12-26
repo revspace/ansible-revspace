@@ -18,6 +18,7 @@
       - less
       - bash
       - rsync
+      - etckeeper
       - sudo-ldap
       - unattended-upgrades
       - apt-listchanges
@@ -42,6 +43,15 @@
     - debian
     - apt
     - common
+    - etckeeper
+
+- name: Init etckeeper
+  command: etckeeper init
+  args:
+    creates: /etc/.git
+  tags:
+    - etckeeper
+
 
 - name: Enable auto-installing security updates on Debian
   debconf:
