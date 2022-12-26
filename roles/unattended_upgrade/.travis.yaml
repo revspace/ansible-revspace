@@ -10,9 +10,9 @@ install:
   - "echo localhost > inventory remote_user=root"
 
 script:
-  - "ansible-playbook -i inventory role.yml --connection=local --sudo"
+  - "ansible-playbook -i inventory role.yaml --connection=local --sudo"
   - >
-    ansible-playbook -i inventory role.yml --connection=local --sudo
+    ansible-playbook -i inventory role.yaml --connection=local --sudo
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)

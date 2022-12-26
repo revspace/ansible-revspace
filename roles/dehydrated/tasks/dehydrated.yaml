@@ -114,11 +114,11 @@
     - dehydrated_cronjob
 
 - name: Include 'apache' tasks
-  include_tasks: apache.yml
+  include_tasks: apache.yaml
   when:
     - dehydrated_apache2 | bool
 
 - name: Include 'nginx' tasks
-  include_tasks: nginx.yml
+  include_tasks: nginx.yaml
   when:
     - dehydrated_nginx|bool
