@@ -85,6 +85,7 @@
   tags:
     - icinga_config_check
   check_mode: no
+  changed_when: false
 
 - name: make flag
   set_fact:
