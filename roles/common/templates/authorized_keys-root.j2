@@ -2,11 +2,11 @@
 # Global entries
 {% for user in global_authkeys_root %}
 # {{ user }}
-{{ lookup('file', 'pubkeys/' + user + '.keys', errors='ignore' ) }}'
+{{ lookup('file', 'pubkeys/' + user + '.keys', errors='ignore' ) }}
 {% endfor %}
 # Host specific entries
 {% for user in host_authkeys_root %}
 # {{ user }}
-{{ lookup('file', 'pubkeys/' + user + '.keys', errors='ignore' ) }}'
+{{ lookup('file', 'pubkeys/' + user + '.keys', errors='ignore' ) }}
 {% endfor %}
 # end Host specific entries
