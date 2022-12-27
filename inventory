@@ -18,10 +18,10 @@ mediaserver.space.revspace.nl          # Squeeze server
 pov.space.revspace.nl
 ldap.space.revspace.nl                # New ldap server
 grafiekjes.space.revspace.nl
-icinga.space.revspace.nl              # Icinga monitoring
-nextcloud.space.revspace.nl           # Nextcloud
-redir.space.revspace.nl               # redir 
-asterisk.space.revspace.nl            # asterisk voip meuk
+# icinga.space.revspace.nl              # Icinga monitoring
+# nextcloud.space.revspace.nl           # Nextcloud
+# redir.space.revspace.nl               # redir 
+# asterisk.space.revspace.nl            # asterisk voip meuk
 
 [memberservers]
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
