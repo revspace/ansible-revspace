@@ -93,7 +93,7 @@
 - name: Update /etc/nsswitch.conf
   lineinfile:
     dest: /etc/nsswitch.conf
-    line: "{{ item }}: compat ldap"
+    line: "{{ item }}:	compat ldap systemd"
     regexp: "^{{ item }}"
   with_items:
     - passwd

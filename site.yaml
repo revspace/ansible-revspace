@@ -2,6 +2,7 @@
 
 - hosts: revspace
   become: true
+  user: root
   roles:
     - { role: "common", tags: [ "common" ] }
     - { role: "dehydrated", tags: [ "dehydrated" ] }
@@ -9,16 +10,19 @@
 
 - hosts: memberservers
   become: true
+  user: root
   roles:
     - { role: "ldapclient", tags: [ "ldapclient" ] }
 
 - hosts: ldap.space.revspace.nl
   become: true
+  user: root
   roles:
     - { role: "ldapserver", tags: [ "ldapserver" ] }
 
 - hosts: icinga.space.revspace.nl
   become: true
+  user: root
   roles:
     - { role: "dehydrated", tags: [ "dehydrated" ] }
     - { role: "icinga", tags: [ "icinga" ] }
