@@ -22,7 +22,7 @@
     - { q: 'password1', v: "{{ slapd_admin_pass }}", t: 'password' }
     - { q: 'password2', v: "{{ slapd_admin_pass }}", t: 'password' }
   changed_when: false
-  no_log: true
+  no_log: "{{ filter_logs|default('true') }}"
 
 - name: Install required software
   apt:
@@ -84,7 +84,7 @@
   with_items:
     - olcAccess
     - olcSSL
-  when: olcedits | changed
+  when: olcedits is changed
   ignore_errors: true
   changed_when: false
   notify:

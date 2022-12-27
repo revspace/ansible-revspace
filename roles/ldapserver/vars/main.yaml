@@ -1,7 +1,8 @@
 ---
 
-#slapd_config_pass:  ""
-#slapd_admin_pass:   ""
+slapd_config_pass:  "{{ lookup('passwordstore', 'revspace/ldap/config') }}"
+slapd_admin_pass:   "{{ lookup('passwordstore', 'revspace/ldap/admin') }}"
+
 slapd_domain:       "space.revspace.nl"
 slapd_root:         "dc=space,dc=revspace,dc=nl"
 slapd_certpath:     "/etc/dehydrated/certs/ldap.space.revspace.nl/"
