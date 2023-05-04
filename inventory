@@ -9,9 +9,10 @@ vm1.space.revspace.nl
 #vm2.space.revspace.nl
 
 [vm1vms]
-shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
-shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
-shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye
+#uitgezet# shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable (8)
+shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable (9)
+shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye (11)
+shell-bookworm.space.revspace.nl      # Member shell doos met debian bookworm (12)
 shell-sid.space.revspace.nl           # Member shell doos met debian sid
 flux.space.revspace.nl                # Radius server
 mediaserver.space.revspace.nl          # Squeeze server
@@ -27,6 +28,7 @@ icinga.space.revspace.nl              # Icinga monitoring
 shell-jessie.space.revspace.nl        # Member shell doos met debian jessie/old-old-stable
 shell-stretch.space.revspace.nl       # Member shell doos met debian stretch/old-stable
 shell-bullseye.space.revspace.nl      # Member shell doos met debian bullseye
+shell-bookworm.space.revspace.nl ansible_host=2001:1c00:2a07:3a01:5054:ff:fe1e:d083
 shell-sid.space.revspace.nl           # Member shell doos met debian sid
 mediaserver.space.revspace.nl
 
