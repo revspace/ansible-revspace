@@ -1,3 +1,0 @@
-[submodule "plugins/lookup_plugins/ansible_pass_lookup"]
-	path = plugins/lookup_plugins/ansible_pass_lookup
-	url = https://github.com/morphje/ansible_pass_lookup.git
