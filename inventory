@@ -18,7 +18,7 @@ mediaserver.space.revspace.nl          # Squeeze server
 pov.space.revspace.nl
 ldap.space.revspace.nl                # New ldap server
 grafiekjes.space.revspace.nl
-# icinga.space.revspace.nl              # Icinga monitoring
+icinga.space.revspace.nl              # Icinga monitoring
 # nextcloud.space.revspace.nl           # Nextcloud
 # redir.space.revspace.nl               # redir 
 # asterisk.space.revspace.nl            # asterisk voip meuk

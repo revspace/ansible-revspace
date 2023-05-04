@@ -27,3 +27,10 @@
     - { role: "dehydrated", tags: [ "dehydrated" ] }
     - { role: "icinga", tags: [ "icinga" ] }
 
+- hosts: gateway.space.revspace.nl
+  become: true
+  user: root
+  check_mode: true
+  roles:
+    - { role: "nameserver", tags: [ "nameserver" ] }
+
